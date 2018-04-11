@@ -26,7 +26,7 @@ def positive_test_search():
     tree, _ = prepare_tree('database/Chopin.xml')
     input_tree, _ = prepare_tree('testinput.xml')
     measure_match_list = search(input_tree, tree)
-    assert len(measure_match_list) != 0, "search: unsuccessful"
+    assert measure_match_list, "search: unsuccessful"
 
 
 def positive_test_get_attrib_from_element():
@@ -71,7 +71,7 @@ def positive_test_text_box_search_folder():
 def positive_test_text_box_search():
     """positive test to make sure text box search method completes a search through a given mei file"""
     tree, _ = prepare_tree('database/Chopin.xml')
-    assert len(text_box_search(tree, "Expressive Terms", "legatissimo")) != 0, "cannot find legatissimo expressive term"
+    assert text_box_search(tree, "Expressive Terms", "legatissimo"), "cannot find legatissimo expressive term"
 
 
 def positive_test_snippet_search_folder():
