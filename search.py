@@ -4,7 +4,7 @@
 import os
 from lxml import etree
 
-namespace = '{http://www.music-encoding.org/ns/mei}'
+namespace = '{http://www.music-encoding.org/ns/mei}' # pylint: disable=invalid-name
 
 # Generic Functions
 
@@ -28,7 +28,7 @@ def string_to_root(string_in):
     Return: [element]: root element of parsed etree
     """
 
-    return etree.fromstring(string_in)
+    return etree.fromstring(string_in) # pylint: disable=c-extension-no-member
 
 
 def prepare_tree(xml_file_path):
@@ -37,7 +37,7 @@ def prepare_tree(xml_file_path):
     Return: tree [etree]: etree of XML file element objects
             root [element] root element of tree
     """
-    tree = etree.parse(xml_file_path)
+    tree = etree.parse(xml_file_path) # pylint: disable=c-extension-no-member
     root = tree.getroot()
     return tree, root
 
