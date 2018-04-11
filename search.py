@@ -219,12 +219,13 @@ def notes_on_beam(tree):
     return beam_notes_list
 
 
-def text_box_search(root, tag, search_term):
+def text_box_search(tree, tag, search_term):
     """searches an mei file for an element which matches the tag and search term given
        Arguments: root [Element]: root element of tree to be searched
                   tag [string]: element type
                   search_term[string]: search term to find element
        Return: [list<int>]: List of measures where tag appears"""
+    root = tree.getroot()
     if tag == "Expressive Terms":
         return find_expressive_term(root, search_term)
     elif tag == "Articulation":
@@ -290,7 +291,7 @@ def check_element_match(element1, element2):
         return False
 
 
-def search(input_root, data_tree):
+def search(input_tree, data_tree):
     """Searches input_root for pattern in data_tree
     Arguments: input_root is a root of elements to be searched for
                data_tree is an etree to be searched
@@ -299,6 +300,7 @@ def search(input_root, data_tree):
     # todo: work on how staffs are split
     # todo: issues with things like measures and dividers between notes
 
+    input_root = input_tree.getroot()
     input_list = root_to_list(input_root)
     data_list = root_to_list(data_tree.getroot())
     measure_match_list = []
@@ -339,8 +341,8 @@ def text_box_search_folder(path, tag, search_term):
     file_list = get_mei_from_folder(path)
     text_box_array = []
     for file in file_list:
-        _, root = prepare_tree(file)
-        tb_search_output_array = text_box_search(root, tag, search_term)
+        tree, root = prepare_tree(file)
+        tb_search_output_array = text_box_search(tree, tag, search_term)
         string_list = []
         for element in tb_search_output_array:
             string_list.append(' '.join(str(e) for e in get_title(file)) + " by " +
@@ -349,19 +351,19 @@ def text_box_search_folder(path, tag, search_term):
     return text_box_array
 
 
-def snippet_search_folder(path, tree):
+def snippet_search_folder(path, input_tree):
     """applies the search() method to a full folder
     Arguments:  path [string]: absolute of relative path to folder
                 tree is an etree to be searched
     Returns:    regular_search_array[List<string>]: title, creator (composer) and
                     measure number in which the snippet is found
     """
-    input_root = tree.getroot()
+
     file_list = get_mei_from_folder(path)
     regular_search_array = []
     for file in file_list:
         tree, _ = prepare_tree(file)
-        search_output_array = search(input_root, tree)
+        search_output_array = search(input_tree, tree)
         string_list = []
         for element in search_output_array:
             string_list.append(' '.join(str(e) for e in get_title(file)) + " by " +
