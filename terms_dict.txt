@@ -5,7 +5,7 @@
 'ad libitum':['ad lib'],
 'ad lib':['ad libitum'],
 
-'crescendo':['cresc'],
+'crescendo':['cresc.'],
 'cresc':['crescendo'],
 
 'da capo':['D.C.'],

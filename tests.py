@@ -7,6 +7,13 @@ from search import prepare_tree, find_artic, search, get_attrib_from_element, \
     text_box_search_folder, text_box_search, snippet_search_folder
 
 
+def positive_test_dictionary_search(): # pylint: disable=invalid-name
+    """Positive test for find_expressive_term"""
+    tree, _ = prepare_tree('database/Chopin.xml')
+    assert text_box_search(tree, "Expressive Terms", 'cresc.') == text_box_search(tree, "Expressive Terms", 'crescendo'),\
+        "text_box_search : crescendo and cresc. returning different results"
+
+
 def positive_test_find_expressive_term(): # pylint: disable=invalid-name
     """Positive test for find_expressive_term"""
     _, root = prepare_tree('database/Chopin.xml')
