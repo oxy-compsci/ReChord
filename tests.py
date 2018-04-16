@@ -1,5 +1,5 @@
 """tests.py contains a test for every back-end algorithm"""
-
+# pylint: disable=invalid-name
 
 from lxml import etree
 from search import prepare_tree, find_artic, search, get_attrib_from_element, \
@@ -7,14 +7,14 @@ from search import prepare_tree, find_artic, search, get_attrib_from_element, \
     text_box_search_folder, text_box_search, snippet_search_folder
 
 
-def positive_test_dictionary_search(): # pylint: disable=invalid-name
-    """Positive test for find_expressive_term"""
+def positive_test_dictionary_search():
+    """Positive test for text_box_search dictionary functionality"""
     tree, _ = prepare_tree('database/Chopin.xml')
     assert text_box_search(tree, "Expressive Terms", 'cresc.') == text_box_search(tree, "Expressive Terms", 'crescendo'),\
         "text_box_search : crescendo and cresc. returning different results"
 
 
-def positive_test_find_expressive_term(): # pylint: disable=invalid-name
+def positive_test_find_expressive_term():
     """Positive test for find_expressive_term"""
     _, root = prepare_tree('database/Chopin.xml')
     element_et_list = find_expressive_term(root, 'legatissimo')
@@ -31,19 +31,19 @@ def positive_test_find_artic():
 def positive_test_search():
     """Positive test for search"""
     tree, _ = prepare_tree('database/Chopin.xml')
-    input_tree, _ = prepare_tree('testinput.xml') # pylint: disable=c-extension-no-member
+    input_tree, _ = prepare_tree('testinput.xml')
     measure_match_list = search(input_tree, tree)
     assert measure_match_list, "search: unsuccessful"
 
 
-def positive_test_get_attrib_from_element(): # pylint: disable=invalid-name
+def positive_test_get_attrib_from_element():
     """Positive test for get_attrib_from_element"""
     tree, _ = prepare_tree('database/Chopin.xml')
     attrib_ls = get_attrib_from_element(tree, 'note', 'pname')
     assert attrib_ls, "positive_test_get_attrib_from_element: no attributes found"
 
 
-def positive_test_get_mei_from_folder(): # pylint: disable=invalid-name
+def positive_test_get_mei_from_folder():
     """Positive test for get_mei_from_database"""
     all_mei_files = get_mei_from_folder('database/MEI_Complete_examples')
     assert all_mei_files, "get_mei_from_database: no files found"
@@ -61,7 +61,7 @@ def positive_test_get_creator():
     assert creator_list, "get_creator: creator (composer) not found"
 
 
-def positive_test_check_element_match(): # pylint: disable=invalid-name
+def positive_test_check_element_match():
     """positive test for seeing if all elements in a file match themselves"""
     _, root = prepare_tree('database/Chopin.xml')
     for element in root_to_list(root):
@@ -69,7 +69,7 @@ def positive_test_check_element_match(): # pylint: disable=invalid-name
             "check_element_match: element not equal to themselves; check Element with id " + element.attrib["xml:id"]
 
 
-def positive_test_text_box_search_folder(): # pylint: disable=invalid-name
+def positive_test_text_box_search_folder():
     """positive test for ensuring the text box search method appropriately searches through a full folder"""
     assert text_box_search_folder("database/MEI_Complete_examples", "Expressive Terms", "cresc."), \
         "cannot find crescendo in folder"
@@ -81,7 +81,7 @@ def positive_test_text_box_search():
     assert text_box_search(tree, "Expressive Terms", "legatissimo"), "cannot find legatissimo expressive term"
 
 
-def positive_test_snippet_search_folder(): # pylint: disable=invalid-name
+def positive_test_snippet_search_folder():
     """positive test to see if the search method will traverse a folder and output matches between the
         snippet and the files in the folder"""
     input_xml = etree.parse('Aguado_Walzer_G-major_SNIPPET_TEST.xml')
