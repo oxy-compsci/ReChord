@@ -220,7 +220,7 @@ def notes_on_beam(tree):
     return beam_notes_list
 
 
-def text_box_search(tree, tag, search_term):
+def text_search(tree, tag, search_term):
     """searches an mei file for an element which matches the tag and search term given
        Arguments: root [Element]: root element of tree to be searched
                   tag [string]: element type
@@ -243,6 +243,16 @@ def text_box_search(tree, tag, search_term):
         return find_pedal_marking(root, search_term)
     else:
         return []
+
+
+def text_box_search(tree, tag, search_term):
+    ret_arr=text_search(tree, tag, search_term)
+    with open('terms_dict.txt', 'r') as inf:
+        dictt = eval(inf.read())
+    if search_term in dictt:
+        for val in dictt[search_term]:
+            ret_arr = ret_arr+text_search(tree, tag, val)
+    return ret_arr
 
 
 def check_element_match(element1, element2):
@@ -371,7 +381,3 @@ def snippet_search_folder(path, input_tree):
                                ' '.join(str(e) for e in get_creator(file)) + ": " + element)
         regular_search_array.append(string_list)
     return regular_search_array
-
-def test_dict_stuff():
-    with open('terms_dict.txt', 'r') as inf:
-        dictt = eval(inf.read())
