@@ -29,7 +29,7 @@ def string_to_root(string_in):
     Return: [element]: root element of parsed etree
     """
 
-    return etree.fromstring(string_in) # pylint: disable=c-extension-no-member
+    return etree.fromstring(string_in)
 
 
 def prepare_tree(xml_file_path):
@@ -38,7 +38,7 @@ def prepare_tree(xml_file_path):
     Return: tree [etree]: etree of XML file element objects
             root [element] root element of tree
     """
-    tree = etree.parse(xml_file_path) # pylint: disable=c-extension-no-member
+    tree = etree.parse(xml_file_path)
     root = tree.getroot()
     return tree, root
 
