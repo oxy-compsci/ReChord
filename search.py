@@ -371,3 +371,7 @@ def snippet_search_folder(path, input_tree):
                                ' '.join(str(e) for e in get_creator(file)) + ": " + element)
         regular_search_array.append(string_list)
     return regular_search_array
+
+def test_dict_stuff():
+    with open('terms_dict.txt', 'r') as inf:
+        dictt = eval(inf.read())
