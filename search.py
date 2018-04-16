@@ -2,9 +2,9 @@
 
 
 import os
+import ast
 from lxml import etree
-
-namespace = '{http://www.music-encoding.org/ns/mei}' # pylint: disable=invalid-name
+MEI_NAMESPACE = '{http://www.music-encoding.org/ns/mei}'
 
 # Generic Functions
 
@@ -181,48 +181,9 @@ def find_pedal_marking(root, marking):
     return [get_measure(element) for element in et_test if element.attrib['dir'] == marking]
 
 
-def notes_on_beam(tree):
-    """return a list of nested list where each nested list is the notes on a beam for all beams in tree
-    Arguments: tree [etree]: tree to be searched
-    Return: beam_notes_list: [List<Element tag='beam'>] nested list of beam elements
-    """
-
-    # get a list of all the beam elements
-    beam_list = get_elements(tree, 'beam')
-    beam_notes_list = []
-
-    # loop through beam list
-    for beam in beam_list:
-
-        # get the children of each beam
-        children = beam.getchildren()
-
-        # loop through the children of the beam
-        # todo: there might be artic ignored here
-        beam_children = []
-        for child in children:
-
-            # if the child is a note, directly add to the list
-            if child.tag == '{http://www.music-encoding.org/ns/mei}note':
-                beam_children += child.attrib['pname']
-
-            # else if the child is a rest, add "0" to the list
-            elif child.tag == '{http://www.music-encoding.org/ns/mei}rest':
-                beam_children += '0'
-
-            # else if the child is a chord, add a list of notes to the list
-            elif child.tag == '{http://www.music-encoding.org/ns/mei}chord':
-                notes = child.getchildren()
-                beam_children.append([note.attrib['pname'] for note in notes if note.tag ==
-                                      '{http://www.music-encoding.org/ns/mei}note'])
-        beam_notes_list.append(beam_children)
-
-    return beam_notes_list
-
-
-def text_search(tree, tag, search_term):
+def text_search(tree, tag, search_term): # pylint: disable = too-many-return-statements
     """searches an mei file for an element which matches the tag and search term given
-       Arguments: root [Element]: root element of tree to be searched
+       Arguments: tree [etree]: etree of mei file to be searched
                   tag [string]: element type
                   search_term[string]: search term to find element
        Return: [list<int>]: List of measures where tag appears"""
@@ -246,9 +207,15 @@ def text_search(tree, tag, search_term):
 
 
 def text_box_search(tree, tag, search_term):
-    ret_arr=text_search(tree, tag, search_term)
+    """searches an mei file for an element which matches the tag and search term, as well as any abbreviations
+       /shorthands, given from the frontend
+       Arguments: tree [etree]: etree of mei file to be searched
+                  tag [string]: element type
+                  search_term[string]: search term to find element
+       Return: [list<int>]: List of measures where tag appears"""
+    ret_arr = text_search(tree, tag, search_term)
     with open('terms_dict.txt', 'r') as inf:
-        dictt = eval(inf.read())
+        dictt = ast.literal_eval(inf.read())
     if search_term in dictt:
         for val in dictt[search_term]:
             ret_arr = ret_arr+text_search(tree, tag, val)
@@ -265,7 +232,7 @@ def check_element_match(element1, element2):
     if element1.tag == element2.tag:
         tag = element1.tag
 
-        if tag == namespace + "note":
+        if tag == MEI_NAMESPACE + "note":
             # check pname and dur of note
 
             if element1.attrib["pname"] != element2.attrib["pname"]:
@@ -285,12 +252,12 @@ def check_element_match(element1, element2):
 
             return True
 
-        elif tag == namespace + "rest":
+        elif tag == MEI_NAMESPACE+ "rest":
             # check dur of rest
             if element1.attrib["dur"] == element2.attrib["dur"]:
                 return True
 
-        elif tag == namespace + "artic":
+        elif tag == MEI_NAMESPACE + "artic":
             # check name of articulation
             if element1.attrib["artic"] == element2.attrib["artic"]:
                 return True
