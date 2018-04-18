@@ -1,0 +1,76 @@
+{
+'accelerando':['accel'],
+'accel':['accelerando'],
+
+'ad libitum':['ad lib'],
+'ad lib':['ad libitum'],
+
+'crescendo':['cresc.'],
+'cresc':['crescendo'],
+
+'da capo':['D.C.'],
+'D.C.':['da capo'],
+
+'dal segno': ['D.S.'],
+'D.S.':['dal segno'],
+
+'decrescendo':['decresc.'],
+'decresc.':['decrescendo'],
+
+'diminuendo':['dim.'],
+'dim.':['diminuendo'],
+
+'espressivo':['espr.'],
+'espr.':['espressivo'],
+
+'forte':['f'],
+'f':['forte'],
+
+'fortepiano':['fp'],
+'fp':['fortepiano'],
+
+'fortissimo':['ff'],
+'ff':['fortissimo'],
+
+'marcato':['marc.'],
+'marc.':['marcato'],
+
+'mezzoforte':['mf'],
+'mf':['mezzoforte'],
+
+'mezzopiano':['mp'],
+'mp':['mezzopiano'],
+
+'pianissimo':['pp'],
+'pp':['pianissimo'],
+
+'piano':['p'],
+'p':['piano'],
+
+'pochettino':['poch.'],
+'poch.':['pochettino'],
+
+'rallentando':['rall.'],
+'rall.':['rallentando'],
+
+'rinforzando':['rf', 'rfz'],
+'rf':['rinforzando', 'rfz'],
+'rfz':['rinforzando','rf'],
+
+'ritardando':['rit.'],
+'rit':['ritardando', 'ritenuto'],
+'ritenuto':['rit'],
+
+'sforzando':['sf', 'sfz'],
+'sf':['sforzando', 'sfz'],
+'sfz':['sforzando', 'sf'],
+
+'simile':['sim.'],
+'sim.':['simile'],
+
+'smorzando':['smorz.'],
+'smorz.':['smorzando'],
+
+'volti subito':['V.S.'],
+'V.S.':['volti subito']
+}

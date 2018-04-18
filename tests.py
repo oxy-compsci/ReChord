@@ -1,5 +1,5 @@
 """tests.py contains a test for every back-end algorithm"""
-
+# pylint: disable=invalid-name
 
 from lxml import etree
 from search import prepare_tree, find_artic, search, get_attrib_from_element, \
@@ -7,52 +7,58 @@ from search import prepare_tree, find_artic, search, get_attrib_from_element, \
     text_box_search_folder, text_box_search, snippet_search_folder
 
 
+def positive_test_dictionary_search():
+    """Positive test for text_box_search dictionary functionality"""
+    tree, _ = prepare_tree('database/Chopin.xml')
+    assert text_box_search(tree, "Expressive Terms", 'cresc.') == text_box_search(tree, "Expressive Terms", 'crescendo'),\
+        "text_box_search : crescendo and cresc. returning different results"
+
+
 def positive_test_find_expressive_term():
     """Positive test for find_expressive_term"""
     _, root = prepare_tree('database/Chopin.xml')
     element_et_list = find_expressive_term(root, 'legatissimo')
-    assert len(element_et_list), "find_expressive_term: legatissimo not found."
+    assert element_et_list, "find_expressive_term: legatissimo not found."
 
 
 def positive_test_find_artic():
     """Positive test for find_artic"""
     _, root = prepare_tree('database/Chopin.xml')
     element_artic_list = find_artic(root, 'stacc')
-    assert len(element_artic_list) != 0, "find_artic: stacc not found"
+    assert element_artic_list, "find_artic: stacc not found"
 
 
 def positive_test_search():
     """Positive test for search"""
     tree, _ = prepare_tree('database/Chopin.xml')
-    input_xml = etree.parse('testinput.xml')
-    input_root = input_xml.getroot()
-    measure_match_list = search(input_root, tree)
-    assert len(measure_match_list) != 0, "search: unsuccessful"
+    input_tree, _ = prepare_tree('testinput.xml')
+    measure_match_list = search(input_tree, tree)
+    assert measure_match_list, "search: unsuccessful"
 
 
 def positive_test_get_attrib_from_element():
     """Positive test for get_attrib_from_element"""
     tree, _ = prepare_tree('database/Chopin.xml')
     attrib_ls = get_attrib_from_element(tree, 'note', 'pname')
-    assert len(attrib_ls) != 0, "positive_test_get_attrib_from_element: no attributes found"
+    assert attrib_ls, "positive_test_get_attrib_from_element: no attributes found"
 
 
 def positive_test_get_mei_from_folder():
     """Positive test for get_mei_from_database"""
     all_mei_files = get_mei_from_folder('database/MEI_Complete_examples')
-    assert len(all_mei_files) != 0, "get_mei_from_database: no files found"
+    assert all_mei_files, "get_mei_from_database: no files found"
 
 
 def positive_test_get_title():
     """Positive test for get_title"""
     title_list = get_title('database/Chopin.xml')
-    assert len(title_list) != 0, "get_title: title not found"
+    assert title_list, "get_title: title not found"
 
 
 def positive_test_get_creator():
     """Positive test for get_creator"""
     creator_list = get_creator('database/Chopin.xml')
-    assert len(creator_list) != 0, "get_creator: creator (composer) not found"
+    assert creator_list, "get_creator: creator (composer) not found"
 
 
 def positive_test_check_element_match():
@@ -65,22 +71,22 @@ def positive_test_check_element_match():
 
 def positive_test_text_box_search_folder():
     """positive test for ensuring the text box search method appropriately searches through a full folder"""
-    assert len(text_box_search_folder("database/MEI_Complete_examples", "Expressive Terms", "cresc.")) != 0, \
+    assert text_box_search_folder("database/MEI_Complete_examples", "Expressive Terms", "cresc."), \
         "cannot find crescendo in folder"
 
 
 def positive_test_text_box_search():
     """positive test to make sure text box search method completes a search through a given mei file"""
-    _, root = prepare_tree('database/Chopin.xml')
-    assert len(text_box_search(root, "Expressive Terms", "legatissimo")) != 0, "cannot find legatissimo expressive term"
+    tree, _ = prepare_tree('database/Chopin.xml')
+    assert text_box_search(tree, "Expressive Terms", "legatissimo"), "cannot find legatissimo expressive term"
 
 
 def positive_test_snippet_search_folder():
     """positive test to see if the search method will traverse a folder and output matches between the
         snippet and the files in the folder"""
     input_xml = etree.parse('Aguado_Walzer_G-major_SNIPPET_TEST.xml')
-    assert len(snippet_search_folder("database/MEI_Complete_examples", input_xml)) != 0, \
-        "no matches found between input file and folder"
+    assert snippet_search_folder("database/MEI_Complete_examples", input_xml), \
+        "no matches found between input file and folder" # pylint: disable=c-extension-no-member
 
 
 def main():
