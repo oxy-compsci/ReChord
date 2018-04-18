@@ -31,7 +31,7 @@ def positive_test_find_artic():
 def positive_test_search():
     """Positive test for search"""
     tree, _ = prepare_tree('database/test_files/Chopin.xml')
-    input_tree, _ = prepare_tree(''database/test_files/testinput.xml')
+    input_tree, _ = prepare_tree('database/test_files/testinput.xml')
     measure_match_list = search(input_tree, tree)
     assert measure_match_list, "search: unsuccessful"
 
@@ -59,7 +59,7 @@ def positive_test_get_title():
 
 def positive_test_get_creator():
     """Positive test for get_creator"""
-    creator_list = get_creator('database/test_files/Chopin.xml)
+    creator_list = get_creator('database/test_files/Chopin.xml')
     assert creator_list, "get_creator: creator (composer) not found"
 
 
