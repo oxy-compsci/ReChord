@@ -181,7 +181,7 @@ def find_pedal_marking(root, marking):
     return [get_measure(element) for element in et_test if element.attrib['dir'] == marking]
 
 
-def text_search(tree, tag, search_term): # pylint: disable = too-many-return-statements
+def text_search(tree, tag, search_term):  # pylint: disable = too-many-return-statements
     """searches an mei file for an element which matches the tag and search term given
        Arguments: tree [etree]: etree of mei file to be searched
                   tag [string]: element type
@@ -222,7 +222,7 @@ def text_box_search(tree, tag, search_term):
     return ret_arr
 
 
-def check_element_match(element1, element2):
+def check_element_match(element1, element2):   # pylint: disable = too-many-return-statements, too-many-branches
     """checks whether element1 and element2 match by our definitions
 
     Arguments: element1 and element2 are both lxml Element type
@@ -319,7 +319,7 @@ def text_box_search_folder(path, tag, search_term):
     file_list = get_mei_from_folder(path)
     text_box_array = []
     for file in file_list:
-        tree, root = prepare_tree(file)
+        tree, _ = prepare_tree(file)
         tb_search_output_array = text_box_search(tree, tag, search_term)
         string_list = []
         for element in tb_search_output_array:
