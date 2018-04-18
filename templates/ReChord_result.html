@@ -12,8 +12,13 @@
 
 <!--load custom CSS-->
 <style>
-    body,h1,h2,h3,h4,h5,h6
+    body,h1,h2,h3,h5,h6
     {font-family: "Raleway", Arial, Helvetica, sans-serif}
+
+    h4
+    {font-family: "Raleway", Arial, Helvetica, sans-serif
+    font-weight:300}
+
 
     .myLink
     {display: none}
@@ -128,7 +133,10 @@
             <h5>{{title}} by {{creator}}</h5>
             <h4>The measure numbers are:</h4>
             {% for origin in origins %}
-            <h5>{{origin}}</h5>
+            <div class="alternative_cls">
+                <h4>Number of Appearances: {{appearances}}</h4>
+                <h5>{{origin}}</h5>
+            </div>
             {% endfor %}
         </div>
 
