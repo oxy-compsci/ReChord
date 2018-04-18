@@ -346,12 +346,11 @@ def snippet_search_folder(path, input_tree):
     for file in file_list:
         tree, _ = prepare_tree(file)
         search_output_array = search(input_tree, tree)
-        
         for element in search_output_array:
             key = str(' '.join(str(e) for e in get_title(file)) + " by " +
                                ' '.join(str(e) for e in get_creator(file)) + '\n' + " Measure Number: ")
             if key in result_list:
-                result_list[key] = str (result_list[key] + "," + (element))
+                result_list[key] = str(result_list[key] + "," + (element))
             else:
                 result_list[key] = element
 
