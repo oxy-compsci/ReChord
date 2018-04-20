@@ -10,21 +10,6 @@ MEI_NAMESPACE = '{http://www.music-encoding.org/ns/mei}'
 # Generic Functions
 
 
-def prepare_terms_dict():
-    """
-    return a dictionary of terms for searching through abbreviation
-    Return: [dictionary]: key: term name (regular spelling); value: term abbreviation
-    """
-
-    with open('database/terms_dictionary.txt') as file_descriptor:
-        text = file_descriptor.read()
-    return {
-        line.split('\t')[0]: line.split('\t')[2].strip('()')
-        for line in text.splitlines()
-        if len(line) == 5
-        }
-
-
 def string_to_root(string_in):
     """Arguments: string_in [string]: input in XML format in a string
     Return: [element]: root element of parsed etree
