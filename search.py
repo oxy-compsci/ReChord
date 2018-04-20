@@ -253,15 +253,13 @@ def check_element_match(element1, element2):   # pylint: disable = too-many-retu
 
             return True
 
-        elif tag == MEI_NAMESPACE+ "rest":
+        elif tag == MEI_NAMESPACE + "rest":
             # check dur of rest
-            if element1.attrib["dur"] == element2.attrib["dur"]:
-                return True
+            return element1.attrib["dur"] == element2.attrib["dur"]
 
         elif tag == MEI_NAMESPACE + "artic":
             # check name of articulation
-            if element1.attrib["artic"] == element2.attrib["artic"]:
-                return True
+            return element1.attrib["artic"] == element2.attrib["artic"]
 
         else:
             # element isn't a note, rest, or articulation--don't need to check attributes
@@ -321,7 +319,7 @@ def text_box_search_folder(path, tag, search_term):
     file_list = get_mei_from_folder(path)
     result = namedtuple('result', ['title', 'creator', 'measure_numbers'])
     result_list = []
-    
+
     for file in file_list:
         tree, _ = prepare_tree(file)
         tb_search_output_array = text_box_search(tree, tag, search_term)
@@ -330,9 +328,10 @@ def text_box_search_folder(path, tag, search_term):
         creator = str(' '.join(str(e) for e in get_creator(file)))
         measure_numbers = [element for element in tb_search_output_array]
 
-        result_list.append(result(title, creator, measure_numbers)) if measure_numbers else None
+        if measure_numbers:
+            result_list.append(result(title, creator, measure_numbers))
 
-        
+
     return result_list
 
 
@@ -347,7 +346,7 @@ def snippet_search_folder(path, input_tree):
     """
 
     file_list = get_mei_from_folder(path)
-    result = namedtuple('result', ['title','creator', 'measure_numbers'])
+    result = namedtuple('result', ['title', 'creator', 'measure_numbers'])
     result_list = []
 
     for file in file_list:
@@ -358,7 +357,8 @@ def snippet_search_folder(path, input_tree):
         creator = str(' '.join(str(e) for e in get_creator(file)))
         measure_numbers = [element for element in search_output_array]
 
-        result_list.append(result(title, creator, measure_numbers)) if measure_numbers else None
+        if measure_numbers:
+            result_list.append(result(title, creator, measure_numbers))
 
         # key = str(' '.join(str(e) for e in get_title(file)) + " by " +
         #                    ' '.join(str(e) for e in get_creator(file)) + '\n' + " Measure Number: ")
