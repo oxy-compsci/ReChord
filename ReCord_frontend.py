@@ -1,15 +1,19 @@
+"""ReChord_frontend.py construct a flask app and calls on search.py for searching"""
+# pylint: disable=invalid-name
+
+import uuid
+import os
+import tempfile
 from io import BytesIO
 from flask import Flask, request, render_template, flash, redirect
 from werkzeug.utils import secure_filename
 from lxml import etree
-from search import search, prepare_tree, get_title, get_creator, find_artic, find_expressive_term, os
+from search import text_box_search_folder, snippet_search_folder
 
-UPLOAD_FOLDER = './uploads/'
 ALLOWED_EXTENSIONS = {'xml', 'mei'}
 
 # initiate the app
 app = Flask(__name__) # pylint: disable=invalid-name
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = '\x82\xebT\x17\x07\xbbx\xd9\xe1dxR\x11\x8b\x0ci\xe1\xb7\xa8\x97\n\xd6\x01\x99'
 
 
@@ -41,49 +45,60 @@ def my_form_post():
 
     # tab1 snippet search
     if request.form['submit'] == 'Search Snippet In Our Database':
-        tree, _ = prepare_tree('database/Chopin.xml')
-        return search_snippet(request.form['text'], tree)
+        path = 'database/MEI_Complete_examples'
+        return search_snippet(path, request.form['text'])
 
     # tab1 snippet search using user submitted library
     elif request.form['submit'] == 'Upload and Search Your Snippet':
-        filename = upload_file('base_file')
-        tree, _ = prepare_tree(str('uploads/' + filename))
-        return search_snippet(request.form['text'], tree)
+        path = upload_file("base_file")
+        return search_snippet(path, request.form['text'])
 
     # tab2 terms search
     elif request.form['submit'] == 'Search Parameter':
         tag = request.form['term']
         para = request.form['parameter']
-        tree, _ = prepare_tree('database/Chopin.xml')
-        return search_terms(tag, para, tree)
+        path = 'database'
+        return search_terms(path, tag, para)
     return
-
 
 
 # Helper functions
 
+def get_mei_from_folder(path):
+    """gets a list of MEI files from a given folder path
+    Arguments: path [string]: absolute or relative path to folder
+    Returns: all_mei_files: List<file>: list of mei files in path
+    """
+    return [path + "/" + filename for filename in os.listdir(path) if filename.endswith('.mei') or filename.endswith('.xml')]
 
-def search_snippet(snippet, tree):
+
+def search_snippet(path, snippet):
     """search the snippet from the given database
     Arguments:
         snippet of xml that want to search for
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
-    # todo: prepare the database
-    # get_mei_from_database('database/MEI_Complete_examples')
-
     xml = BytesIO(snippet.encode())
-    input_xml = etree.parse(xml)
-    input_root = input_xml.getroot()
+    input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
 
-    snippet_measure = search(input_root, tree)
-    title = get_title(tree)
-    creator = get_creator(tree)
-    return render_template('ReChord_result.html', results=snippet_measure, title=title, creator=creator)
+    named_tuples_ls = snippet_search_folder(path, input_xml_tree)
+    origin_title = []
+    origin_creator = []
+    origin_measure_numbers = []
+    origin_num_appearance = []
 
 
-def search_terms(tag, para, tree):
+    for tuple in named_tuples_ls:
+        origin_title.append(tuple.title)
+        origin_creator.append(tuple.creator)
+        origin_measure_numbers.append(tuple.measure_numbers)
+        origin_num_appearance.append(len(tuple.measure_numbers))
+
+    return render_template('ReChord_result.html', titles=origin_title, creators = origin_creator, measure_numbers = origin_measure_numbers, num_appearances = origin_num_appearance)
+
+
+def search_terms(path, tag, para):
     """ search terms in the database
     Arguments:
         tags of term that want to search for
@@ -92,49 +107,48 @@ def search_terms(tag, para, tree):
     Return: rendered result page 'ReChord_result.html'
     """
 
-    if tag == 'Expressive Terms':
-        # todo: do search on expressive terms
-        result = find_artic(tree, para)
-    elif tag == 'Articulation':
-        result = find_expressive_term(tree.root, para)
-
-    # todo: Integrate more term search
-    # elif tag == 'Tempo Marking':
-    # elif tag == 'Dynamic Marking':
-    # elif tag == 'Piano Fingerings':
-    # elif tag == 'Pedal Marking':
-    # elif tag == 'Hairpin':
-    # elif tag == 'Slur/Ligatures':
-    # elif tag == 'Ornaments':
-    # elif tag == 'Notes':
-    # elif tag == 'Accidental':
-    return render_template('ReChord_result.html', result=result)
+    return render_template('ReChord_result.html', result=text_box_search_folder(path, tag, para))
 
 
 def upload_file(name_tag):
-    """pass the upload file and store it in uploads folder
+    """pass the upload files and store them in uploads folder's unique sub-folder
     Arguments: name_tag that used in html
-    Return: rendered result page 'ReChord_result.html'"""
+    Return: upload path name
+    """
 
     # check if the post request has the file part
     if 'base_file' not in request.files:
         flash('No file part')
         return redirect(request.url)
     else:
-        file = request.files[name_tag]
+        files = request.files.getlist(name_tag)
+        file_path = make_upload_dir()
 
-        # if user does not select file, browser also submit a empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+        for file in files:
+            # if user does not select file, browser also submit a empty part without filename
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
 
-        # if properly uploaded
-        elif file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # todo handle return
-            return filename
+            # if properly uploaded
+            elif file and allowed_file(file.filename):
+                with tempfile.TemporaryDirectory() as tmpdirname:
+                    file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
 
+            # elif file and allowed_file(file.filename):
+            #     filename = secure_filename(file.filename)
+            #     file.save(os.path.join(file_path, filename))
+        return file_path
+
+
+def make_upload_dir():
+    """return a unique file_path for each upload
+    RETURN: unique file path under uploads folder"""
+
+    file_path = r"database/uploads/" + str(uuid.uuid4()) + "/"
+    directory = os.path.dirname(file_path)
+    os.makedirs(directory)
+    return file_path
 
 if __name__ == "__main__":
     app.run()

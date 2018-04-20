@@ -12,8 +12,10 @@
 
 <!--load custom CSS-->
 <style>
-    body,h1,h2,h3,h4,h5,h6
+    body,h1,h2,h3,h4,h6
     {font-family: "Raleway", Arial, Helvetica, sans-serif}
+
+
 
     .myLink
     {display: none}
@@ -60,6 +62,41 @@
     .hidden{
     display:none;
     }
+
+    /* Create three equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 33.33%;
+        padding: 10px;
+        height: 300px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .max-lines {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    }
+
+    .min-lines {
+    line-height:20px
+    }
+
+
+
+
+
+
+
+
+
 
 
 </style>
@@ -120,15 +157,41 @@
             </div>
         </div>
     </div>
+    <!--Search Results-->
     <div class="w3-display-right-result" style="width:50%">
-        <div class="result-data">
-            <h2>Congrats!</h2>
-            <h4>Your snippets locate at:</h4>
-            <h5>{{title}} by {{creator}}</h5>
-            <h4>The measure numbers are:</h4>
-            {% for result in results %}
-            <h5>{{result}}</h5>
-            {% endfor %}
+        <h1 style="padding-left:20px"> Search Results:</h1>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="column" style="background-color:#aaa;">
+                <h2>Appearances</h2>
+                {% for appearance in num_appearances %}
+                <div class="min-lines">
+                    <h3>{{appearance}}</h3>
+                    <br>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="column" style="background-color:#bbb;">
+                <h2>MEI File Name</h2>
+                {% for title in titles %}
+                <div class="max-lines">
+                    <p style="font-family: Arial,sans-serif;font-size:20px;font-weight: 400;margin: 0px 0;">{{title}}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="column" style="background-color:#ccc;">
+                <h2>Measure Number</h2>
+                {% for measure in measure_numbers %}
+                <div class="min-lines">
+                    <h4>{{measure}}</h4>
+                    <br>
+                    <br>
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
     </div>
@@ -174,6 +237,15 @@ $( "#button" ).click(function() {
     $( "#user_database" ).toggle();
     $( "#reChord_database" ).toggle().hide();
 });
+
+
+
+
+
+
+
+
+
 
 
 
