@@ -3,6 +3,7 @@
 
 import uuid
 import os
+import tempfile
 from io import BytesIO
 from flask import Flask, request, render_template, flash, redirect
 from werkzeug.utils import secure_filename
@@ -82,14 +83,16 @@ def search_snippet(path, snippet):
     input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
 
     # fixme: the new backend search file return title and creator name
-    origins = snippet_search_folder(path, input_xml_tree)
+    named_tuples_ls = snippet_search_folder(path, input_xml_tree)
     result_list = []
-    for key, value in origins.items():
-        temp = key + value
-        result_list.append(temp)
 
-        # times of appearing
-        num_appearance = len(value.split(","))
+    for tuple in named_tuples_ls:
+        tuple.title
+        tuple.creator
+        tuple.measure_numbers
+
+    # times of appearing
+    num_appearance = len(named_tuples_ls.measure_numbers)
 
     return render_template('ReChord_result.html', origins=result_list, appearances=num_appearance)
 
@@ -128,8 +131,12 @@ def upload_file(name_tag):
 
             # if properly uploaded
             elif file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(file_path, filename))
+                with tempfile.TemporaryDirectory() as tmpdirname:
+                    file.save(os.path.join(tmpdirname, secure_filename(file.filename))
+
+            # elif file and allowed_file(file.filename):
+            #     filename = secure_filename(file.filename)
+            #     file.save(os.path.join(file_path, filename))
         return file_path
 
 
