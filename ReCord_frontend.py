@@ -82,7 +82,6 @@ def search_snippet(path, snippet):
     xml = BytesIO(snippet.encode())
     input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
 
-    # fixme: the new backend search file return title and creator name
     named_tuples_ls = snippet_search_folder(path, input_xml_tree)
     result_list = []
 
@@ -132,7 +131,7 @@ def upload_file(name_tag):
             # if properly uploaded
             elif file and allowed_file(file.filename):
                 with tempfile.TemporaryDirectory() as tmpdirname:
-                    file.save(os.path.join(tmpdirname, secure_filename(file.filename))
+                    file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
 
             # elif file and allowed_file(file.filename):
             #     filename = secure_filename(file.filename)
