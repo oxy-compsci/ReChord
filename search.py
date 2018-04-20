@@ -219,7 +219,7 @@ def text_box_search(tree, tag, search_term):
         dictt = ast.literal_eval(inf.read())
     if search_term in dictt:
         for val in dictt[search_term]:
-            ret_arr = ret_arr+text_search(tree, tag, val)
+            ret_arr += text_search(tree, tag, val)
     return ret_arr
 
 

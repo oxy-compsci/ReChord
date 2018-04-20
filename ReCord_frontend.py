@@ -57,7 +57,7 @@ def my_form_post():
     elif request.form['submit'] == 'Search Parameter':
         tag = request.form['term']
         para = request.form['parameter']
-        path = 'database'
+        path = 'database/MEI_Complete_examples'
         return search_terms(path, tag, para)
 
     else:
@@ -144,9 +144,6 @@ def upload_file(name_tag):
                 with tempfile.TemporaryDirectory() as tmpdirname:
                     file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
 
-            # elif file and allowed_file(file.filename):
-            #     filename = secure_filename(file.filename)
-            #     file.save(os.path.join(file_path, filename))
         return file_path
 
 
