@@ -5,7 +5,7 @@ import uuid
 import os
 import tempfile
 from io import BytesIO
-from flask import Flask, request, render_template, flash, redirect
+from flask import Flask, request, render_template, flash, redirect, abort
 from werkzeug.utils import secure_filename
 from lxml import etree
 from search import text_box_search_folder, snippet_search_folder
@@ -59,7 +59,10 @@ def my_form_post():
         para = request.form['parameter']
         path = 'database'
         return search_terms(path, tag, para)
-    return
+
+    else:
+        abort(404)
+        return None
 
 
 # Helper functions
@@ -89,13 +92,19 @@ def search_snippet(path, snippet):
     origin_num_appearance = []
 
 
-    for tuple in named_tuples_ls:
-        origin_title.append(tuple.title)
-        origin_creator.append(tuple.creator)
-        origin_measure_numbers.append(tuple.measure_numbers)
-        origin_num_appearance.append(len(tuple.measure_numbers))
+    for result in named_tuples_ls:
+        origin_title.append(result.title)
+        origin_creator.append(result.creator)
+        origin_measure_numbers.append(result.measure_numbers)
+        origin_num_appearance.append(len(result.measure_numbers))
 
-    return render_template('ReChord_result.html', titles=origin_title, creators = origin_creator, measure_numbers = origin_measure_numbers, num_appearances = origin_num_appearance)
+    return render_template(
+        'ReChord_result.html',
+        titles=origin_title,
+        creators=origin_creator,
+        measure_numbers=origin_measure_numbers,
+        num_appearances=origin_num_appearance,
+    )
 
 
 def search_terms(path, tag, para):
