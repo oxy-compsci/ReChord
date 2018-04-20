@@ -45,7 +45,7 @@ def my_form_post():
 
     # tab1 snippet search
     if request.form['submit'] == 'Search Snippet In Our Database':
-        path = 'database/test_files'
+        path = 'database/MEI_Complete_examples'
         return search_snippet(path, request.form['text'])
 
     # tab1 snippet search using user submitted library
@@ -83,17 +83,19 @@ def search_snippet(path, snippet):
     input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
 
     named_tuples_ls = snippet_search_folder(path, input_xml_tree)
-    result_list = []
+    origin_title = []
+    origin_creator = []
+    origin_measure_numbers = []
+    origin_num_appearance = []
+
 
     for tuple in named_tuples_ls:
-        tuple.title
-        tuple.creator
-        tuple.measure_numbers
+        origin_title.append(tuple.title)
+        origin_creator.append(tuple.creator)
+        origin_measure_numbers.append(tuple.measure_numbers)
+        origin_num_appearance.append(len(tuple.measure_numbers))
 
-    # times of appearing
-    num_appearance = len(named_tuples_ls.measure_numbers)
-
-    return render_template('ReChord_result.html', origins=result_list, appearances=num_appearance)
+    return render_template('ReChord_result.html', titles=origin_title, creators = origin_creator, measure_numbers = origin_measure_numbers, num_appearances = origin_num_appearance)
 
 
 def search_terms(path, tag, para):
