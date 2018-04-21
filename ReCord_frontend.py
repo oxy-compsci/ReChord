@@ -50,8 +50,9 @@ def my_form_post():
 
     # tab1 snippet search using user submitted library
     elif request.form['submit'] == 'Upload and Search Your Snippet':
-        path = upload_file("base_file")
-        return search_snippet(path, request.form['text'])
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            path = upload_file("base_file", tmpdirname)
+            return search_snippet(path, request.form['text'])
 
     # tab2 terms search
     elif request.form['submit'] == 'Search Parameter':
@@ -91,7 +92,6 @@ def search_snippet(path, snippet):
     origin_measure_numbers = []
     origin_num_appearance = []
 
-
     for result in named_tuples_ls:
         origin_title.append(result.title)
         origin_creator.append(result.creator)
@@ -119,7 +119,7 @@ def search_terms(path, tag, para):
     return render_template('ReChord_result.html', result=text_box_search_folder(path, tag, para))
 
 
-def upload_file(name_tag):
+def upload_file(name_tag, tmpdirname):
     """pass the upload files and store them in uploads folder's unique sub-folder
     Arguments: name_tag that used in html
     Return: upload path name
@@ -131,7 +131,6 @@ def upload_file(name_tag):
         return redirect(request.url)
     else:
         files = request.files.getlist(name_tag)
-        file_path = make_upload_dir()
 
         for file in files:
             # if user does not select file, browser also submit a empty part without filename
@@ -141,10 +140,8 @@ def upload_file(name_tag):
 
             # if properly uploaded
             elif file and allowed_file(file.filename):
-                with tempfile.TemporaryDirectory() as tmpdirname:
-                    file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
-
-        return file_path
+                file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+        return tmpdirname
 
 
 def make_upload_dir():
