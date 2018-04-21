@@ -144,14 +144,5 @@ def upload_file(name_tag, tmpdirname):
         return tmpdirname
 
 
-def make_upload_dir():
-    """return a unique file_path for each upload
-    RETURN: unique file path under uploads folder"""
-
-    file_path = r"database/uploads/" + str(uuid.uuid4()) + "/"
-    directory = os.path.dirname(file_path)
-    os.makedirs(directory)
-    return file_path
-
 if __name__ == "__main__":
     app.run()
