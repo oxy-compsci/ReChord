@@ -1,7 +1,6 @@
 """ReChord_frontend.py construct a flask app and calls on search.py for searching"""
 # pylint: disable=invalid-name
 
-import uuid
 import os
 import tempfile
 from io import BytesIO
@@ -61,6 +60,14 @@ def my_form_post():
         path = 'database/MEI_Complete_examples'
         return search_terms(path, tag, para)
 
+    # todo: add tempfile upload html parsing for term search
+    elif request.form['submit'] == 'Upload and Search Parameter':
+        tag = request.form['term']
+        para = request.form['parameter']
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            path = upload_file("base_file", tmpdirname)
+            return search_terms(path, tag, para)
+
     else:
         abort(404)
         return None
@@ -107,6 +114,7 @@ def search_snippet(path, snippet):
     )
 
 
+# todo: parse named tuples list for term search
 def search_terms(path, tag, para):
     """ search terms in the database
     Arguments:
