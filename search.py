@@ -221,8 +221,9 @@ def check_element_match(element1, element2):   # pylint: disable = too-many-retu
         if tag == MEI_NAMESPACE + "note":
             # check pname and dur of note
 
-            if element1.attrib["pname"] != element2.attrib["pname"]:
-                return False
+            if 'pname' in element1.attrib and 'pname' in element2.attrib:
+                if element1.attrib["pname"] != element2.attrib["pname"]:
+                    return False
 
             if 'dur' in element1.attrib and 'dur' in element2.attrib:
                 if element1.attrib["dur"] != element2.attrib["dur"]:
@@ -344,12 +345,5 @@ def snippet_search_folder(path, input_tree):
 
         if measure_numbers:
             result_list.append(result(title, creator, measure_numbers))
-
-        # key = str(' '.join(str(e) for e in get_title(file)) + " by " +
-        #                    ' '.join(str(e) for e in get_creator(file)) + '\n' + " Measure Number: ")
-        # if key in result_list:
-        #     result_list[key] = str(result_list[key] + "," + (element))
-        # else:
-        #     result_list[key] = element
 
     return result_list
