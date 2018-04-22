@@ -94,24 +94,8 @@ def search_snippet(path, snippet):
     input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
 
     named_tuples_ls = snippet_search_folder(path, input_xml_tree)
-    origin_title = []
-    origin_creator = []
-    origin_measure_numbers = []
-    origin_num_appearance = []
 
-    for result in named_tuples_ls:
-        origin_title.append(result.title)
-        origin_creator.append(result.creator)
-        origin_measure_numbers.append(result.measure_numbers)
-        origin_num_appearance.append(len(result.measure_numbers))
-
-    return render_template(
-        'ReChord_result.html',
-        titles=origin_title,
-        creators=origin_creator,
-        measure_numbers=origin_measure_numbers,
-        num_appearances=origin_num_appearance,
-    )
+    return render_template('ReChord_result.html',origins=named_tuples_ls)
 
 
 # todo: parse named tuples list for term search
@@ -123,8 +107,11 @@ def search_terms(path, tag, para):
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
+    print(para)
+    results = text_box_search_folder(path, tag, para)
+    print(results)
 
-    return render_template('ReChord_result.html', result=text_box_search_folder(path, tag, para))
+    return render_template('ReChord_term.html', results=results)
 
 
 def upload_file(name_tag, tmpdirname):

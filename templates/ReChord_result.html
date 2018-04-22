@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="main.js"></script>
 
 <!--load custom CSS-->
 <style>
@@ -63,36 +64,21 @@
     display:none;
     }
 
-    /* Create three equal columns that floats next to each other */
-    .column {
-        float: left;
-        width: 33.33%;
-        padding: 10px;
-        height: 300px; /* Should be removed. Only for demonstration */
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
     }
 
-    /* Clear floats after the columns */
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
+    td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
     }
 
-    .max-lines {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    tr:nth-child(even) {
+    background-color: #dddddd;
     }
-
-    .min-lines {
-    line-height:20px
-    }
-
-
-
-
-
 
 
 
@@ -163,36 +149,25 @@
         <br>
         <br>
 
-        <div class="row">
-            <div class="column" style="background-color:#aaa;">
-                <h2>Appearances</h2>
-                {% for appearance in num_appearances %}
-                <div class="min-lines">
-                    <h3>{{appearance}}</h3>
-                    <br>
-                    <br>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="column" style="background-color:#bbb;">
-                <h2>MEI File Name</h2>
-                {% for title in titles %}
-                <div class="max-lines">
-                    <p style="font-family: Arial,sans-serif;font-size:20px;font-weight: 400;margin: 0px 0;">{{title}}</p>
-                </div>
-                {% endfor %}
-            </div>
-            <div class="column" style="background-color:#ccc;">
-                <h2>Measure Number</h2>
-                {% for measure in measure_numbers %}
-                <div class="min-lines">
-                    <h4>{{measure}}</h4>
-                    <br>
-                    <br>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+        <table>
+            <tr>
+            <th>Matching</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Measures</th>
+            </tr>
+
+            <tbody>
+            {% for origin in origins %}
+            <tr>
+                <td>Appearance Number</td>
+                <td>{{origin.title}}</td>
+                <td>{{origin.creator}}</td>
+                <td>{{origin.measure_numbers}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
 
     </div>
 </header>
@@ -238,21 +213,9 @@ $( "#button" ).click(function() {
     $( "#reChord_database" ).toggle().hide();
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
+
+
 
 </html>
 
