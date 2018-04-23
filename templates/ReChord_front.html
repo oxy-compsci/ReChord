@@ -9,6 +9,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <!--load custom CSS-->
 <style>
@@ -21,6 +25,13 @@
     input {
     overflow: visible;
     width: 100%;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    }
+
+    input.text_input {
+    overflow: visible;
+    width: 20%;
     padding: 12px 20px;
     border: 1px solid #ccc;
     }
@@ -41,8 +52,16 @@
     top: 40%;
     }
 
-    .hidden{
-    display:none;
+    textarea {
+    overflow: auto;
+    width: 100%;
+    }
+
+    .ui-state-active {
+    border: 1px solid #87ceeb;
+    background: #4caf4f;
+    font-weight: normal;
+    color: #ffffff;
     }
 
 
@@ -56,7 +75,7 @@
     <a href="./" class="w3-bar-item w3-button w3-text-green w3-hover-green"><b><i
             class="fa fa-map-marker w3-margin-right"></i>Project ReChord</b></a>
     <div class="w3-right w3-hide-small">
-        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i> About the prject</a>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i> About the project</a>
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-thumbs-o-up"></i> Q&A</a>
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-github"></i> Github</a>
     </div>
@@ -81,28 +100,39 @@
 
             <!-- Tabs -->
             <div id="Snippet" class="w3-container w3-white w3-padding-16 myLink">
-                <h3>Paste your MEI snippet here</h3>
-                <div class="w3-row-padding" style="margin:0 -2px;">
-                    <div class="w3-full">
-                        <!--todo: here is the frontend form!-->
-                        <form method="POST" enctype="multipart/form-data">
-                            <input name="text" placeholder="Paste your MEI Snippet Here" required>
-                            <br>
-                            <h6><a id="button" href="#">Upload and search in your database</a></h6>
-                            <div id="reChord_database">
-                                <input type="submit" name="submit" value="Search Snippet In Our Database">
+                <br>
+                <div id="accordion">
+                    <h4>Search in ReChord Database</h4>
+                    <div>
+                        <h3>Paste your MEI snippet here</h3>
+                        <div class="w3-row-padding" style="margin:0 -2px;">
+                            <div class="w3-full">
+                                <form method="POST" enctype="multipart/form-data">
+                                    <textarea name="text" rows="9" cols="80"></textarea>
+                                    <br>
+                                    <input type="submit" name="submit" value="Search Snippet In Our Database">
+                                    <br>
+                                </form>
                             </div>
-
-
-                            <div id="user_database" class="hidden">
-                                <br>
-                                <input type="file" name="base_file" multiple="">
-                                <input type="submit" name="submit" value="Upload and Search Your Snippet">
+                        </div>
+                    </div>
+                    <h4>Upload MEI Files and Search</h4>
+                    <div>
+                        <h3>Paste your MEI snippet here</h3>
+                        <div class="w3-row-padding" style="margin:0 -2px;">
+                            <div class="w3-full">
+                                <form method="POST" enctype="multipart/form-data">
+                                    <textarea name="text" rows="9" cols="80"></textarea>
+                                    <br>
+                                    <input type="file" name="base_file" multiple="">
+                                    <input type="submit" name="submit" value="Upload and Search Your Snippet">
+                                </form>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            
             <div id="Term" class="w3-container w3-white w3-padding-16 myLink">
                 <h3>Please select the expressive terms to search</h3>
                 <form method="POST">
@@ -147,6 +177,7 @@
     </div>
 </footer>
 
+
 <script>
 // Tabs
 function openLink(evt, linkName) {
@@ -166,11 +197,11 @@ function openLink(evt, linkName) {
 document.getElementsByClassName("tablink")[0].click();
 
 //Toggle Options for file upload
+$( function() {
+    $( "#accordion" ).accordion();
+  } );
 
-$( "#button" ).click(function() {
-    $( "#user_database" ).toggle();
-    $( "#reChord_database" ).toggle().hide();
-});
+
 
 
 

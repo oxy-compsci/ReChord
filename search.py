@@ -316,8 +316,6 @@ def text_box_search_folder(path, tag, search_term):
 
         if measure_numbers:
             result_list.append(result(title, creator, measure_numbers))
-
-
     return result_list
 
 
@@ -332,7 +330,7 @@ def snippet_search_folder(path, input_tree):
     """
 
     file_list = get_mei_from_folder(path)
-    result = namedtuple('result', ['title', 'creator', 'measure_numbers'])
+    result = namedtuple('result', ['title', 'creator', 'measure_numbers', 'appearance'])
     result_list = []
 
     for file in file_list:
@@ -342,8 +340,9 @@ def snippet_search_folder(path, input_tree):
         title = str(' '.join(str(e) for e in get_title(file)))
         creator = str(' '.join(str(e) for e in get_creator(file)))
         measure_numbers = [element for element in search_output_array]
+        appearance = len(measure_numbers)
 
         if measure_numbers:
-            result_list.append(result(title, creator, measure_numbers))
+            result_list.append(result(title, creator, measure_numbers, appearance))
 
     return result_list
