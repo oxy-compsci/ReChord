@@ -7,7 +7,7 @@ from io import BytesIO
 from flask import Flask, request, render_template, flash, redirect, abort
 from werkzeug.utils import secure_filename
 from lxml import etree
-from search import text_box_search_folder, snippet_search_folder
+from search import text_box_search_folder, snippet_search_folder, prepare_tree
 
 ALLOWED_EXTENSIONS = {'xml', 'mei'}
 
@@ -90,7 +90,8 @@ def search_snippet(path, snippet):
     Return: rendered result page 'ReChord_result.html'
     """
     xml = BytesIO(snippet.encode())
-    input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
+    try:
+        input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
 
     named_tuples_ls = snippet_search_folder(path, input_xml_tree)
 
