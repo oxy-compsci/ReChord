@@ -93,10 +93,12 @@ def search_snippet(path, snippet):
     try:
         input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
 
-    named_tuples_ls = snippet_search_folder(path, input_xml_tree)
+        named_tuples_ls = snippet_search_folder(path, input_xml_tree)
 
-    return render_template('ReChord_result.html', origins=named_tuples_ls)
+        return render_template('ReChord_result.html', origins=named_tuples_ls)
 
+    except (etree.XMLSyntaxError, ValueError):
+        print("Invalid XML")
 
 def search_terms(path, tag, para):
     """ search terms in the database
