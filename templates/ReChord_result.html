@@ -187,7 +187,7 @@
         <table>
             <tr>
             <th>Matching</th>
-            <th>Title</th>
+            <th>Title & File Name</th>
             <th>Author</th>
             <th>Measures</th>
             </tr>
@@ -196,7 +196,7 @@
             {% for origin in origins %}
             <tr>
                 <td>{{origin.appearance}}</td>
-                <td>{{origin.title}}</td>
+                <td>{{origin.title}}<br><strong>File Name: </strong><i>{{origin.file_name}}</i></td>
                 <td>{{origin.creator}}</td>
                 <td>{{origin.measure_numbers}}</td>
             </tr>
