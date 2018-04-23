@@ -36,7 +36,6 @@ def positive_test_search():
     assert measure_match_list, "search: unsuccessful"
 
 
-
 def positive_test_get_attrib_from_element():
     """Positive test for get_attrib_from_element"""
     tree, _ = prepare_tree('database/test_files/Chopin.xml')
@@ -56,12 +55,10 @@ def positive_test_get_title():
     assert title_list, "get_title: title not found"
 
 
-
 def positive_test_get_creator():
     """Positive test for get_creator"""
     creator_list = get_creator('database/test_files/Chopin.xml')
     assert creator_list, "get_creator: creator (composer) not found"
-
 
 
 def positive_test_check_element_match():
@@ -84,14 +81,12 @@ def positive_test_text_box_search():
     assert text_box_search(tree, "Expressive Terms", "legatissimo"), "cannot find legatissimo expressive term"
 
 
-
 def positive_test_snippet_search_folder():
     """positive test to see if the search method will traverse a folder and output matches between the
         snippet and the files in the folder"""
     input_xml = etree.parse('database/test_files/Aguado_Walzer_G-major_SNIPPET_TEST.xml')
     assert snippet_search_folder("database/MEI_Complete_examples", input_xml), \
         "no matches found between input file and folder" # pylint: disable=c-extension-no-member
-
 
 
 def main():

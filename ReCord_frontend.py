@@ -1,7 +1,6 @@
 """ReChord_frontend.py construct a flask app and calls on search.py for searching"""
 # pylint: disable=invalid-name
 
-import uuid
 import os
 import tempfile
 from io import BytesIO
@@ -13,7 +12,7 @@ from search import text_box_search_folder, snippet_search_folder
 ALLOWED_EXTENSIONS = {'xml', 'mei'}
 
 # initiate the app
-app = Flask(__name__) # pylint: disable=invalid-name
+app = Flask(__name__)  # pylint: disable=invalid-name
 app.secret_key = '\x82\xebT\x17\x07\xbbx\xd9\xe1dxR\x11\x8b\x0ci\xe1\xb7\xa8\x97\n\xd6\x01\x99'
 
 
@@ -50,15 +49,24 @@ def my_form_post():
 
     # tab1 snippet search using user submitted library
     elif request.form['submit'] == 'Upload and Search Your Snippet':
-        path = upload_file("base_file")
-        return search_snippet(path, request.form['text'])
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            path = upload_file("base_file", tmpdirname)
+            return search_snippet(path, request.form['text'])
 
     # tab2 terms search
     elif request.form['submit'] == 'Search Parameter':
         tag = request.form['term']
         para = request.form['parameter']
-        path = 'database'
+        path = 'database/MEI_Complete_examples'
         return search_terms(path, tag, para)
+
+    # todo: add tempfile upload html parsing for term search
+    elif request.form['submit'] == 'Upload and Search Parameter':
+        tag = request.form['term']
+        para = request.form['parameter']
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            path = upload_file("base_file", tmpdirname)
+            return search_terms(path, tag, para)
 
     else:
         abort(404)
@@ -72,7 +80,8 @@ def get_mei_from_folder(path):
     Arguments: path [string]: absolute or relative path to folder
     Returns: all_mei_files: List<file>: list of mei files in path
     """
-    return [path + "/" + filename for filename in os.listdir(path) if filename.endswith('.mei') or filename.endswith('.xml')]
+    return [path + "/" + filename for filename in os.listdir(path) if
+            filename.endswith('.mei') or filename.endswith('.xml')]
 
 
 def search_snippet(path, snippet):
@@ -86,27 +95,11 @@ def search_snippet(path, snippet):
     input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
 
     named_tuples_ls = snippet_search_folder(path, input_xml_tree)
-    origin_title = []
-    origin_creator = []
-    origin_measure_numbers = []
-    origin_num_appearance = []
+
+    return render_template('ReChord_result.html', origins=named_tuples_ls)
 
 
-    for result in named_tuples_ls:
-        origin_title.append(result.title)
-        origin_creator.append(result.creator)
-        origin_measure_numbers.append(result.measure_numbers)
-        origin_num_appearance.append(len(result.measure_numbers))
-
-    return render_template(
-        'ReChord_result.html',
-        titles=origin_title,
-        creators=origin_creator,
-        measure_numbers=origin_measure_numbers,
-        num_appearances=origin_num_appearance,
-    )
-
-
+# todo: parse named tuples list for term search
 def search_terms(path, tag, para):
     """ search terms in the database
     Arguments:
@@ -115,11 +108,12 @@ def search_terms(path, tag, para):
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
+    results = text_box_search_folder(path, tag, para)
 
-    return render_template('ReChord_result.html', result=text_box_search_folder(path, tag, para))
+    return render_template('ReChord_result.html', origins=results)
 
 
-def upload_file(name_tag):
+def upload_file(name_tag, tmpdirname):
     """pass the upload files and store them in uploads folder's unique sub-folder
     Arguments: name_tag that used in html
     Return: upload path name
@@ -131,7 +125,6 @@ def upload_file(name_tag):
         return redirect(request.url)
     else:
         files = request.files.getlist(name_tag)
-        file_path = make_upload_dir()
 
         for file in files:
             # if user does not select file, browser also submit a empty part without filename
@@ -141,23 +134,9 @@ def upload_file(name_tag):
 
             # if properly uploaded
             elif file and allowed_file(file.filename):
-                with tempfile.TemporaryDirectory() as tmpdirname:
-                    file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+                file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+        return tmpdirname
 
-            # elif file and allowed_file(file.filename):
-            #     filename = secure_filename(file.filename)
-            #     file.save(os.path.join(file_path, filename))
-        return file_path
-
-
-def make_upload_dir():
-    """return a unique file_path for each upload
-    RETURN: unique file path under uploads folder"""
-
-    file_path = r"database/uploads/" + str(uuid.uuid4()) + "/"
-    directory = os.path.dirname(file_path)
-    os.makedirs(directory)
-    return file_path
 
 if __name__ == "__main__":
     app.run()

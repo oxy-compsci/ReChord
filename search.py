@@ -10,21 +10,6 @@ MEI_NAMESPACE = '{http://www.music-encoding.org/ns/mei}'
 # Generic Functions
 
 
-def prepare_terms_dict():
-    """
-    return a dictionary of terms for searching through abbreviation
-    Return: [dictionary]: key: term name (regular spelling); value: term abbreviation
-    """
-
-    with open('database/terms_dictionary.txt') as file_descriptor:
-        text = file_descriptor.read()
-    return {
-        line.split('\t')[0]: line.split('\t')[2].strip('()')
-        for line in text.splitlines()
-        if len(line) == 5
-        }
-
-
 def string_to_root(string_in):
     """Arguments: string_in [string]: input in XML format in a string
     Return: [element]: root element of parsed etree
@@ -219,7 +204,7 @@ def text_box_search(tree, tag, search_term):
         dictt = ast.literal_eval(inf.read())
     if search_term in dictt:
         for val in dictt[search_term]:
-            ret_arr = ret_arr+text_search(tree, tag, val)
+            ret_arr += text_search(tree, tag, val)
     return ret_arr
 
 
@@ -236,8 +221,9 @@ def check_element_match(element1, element2):   # pylint: disable = too-many-retu
         if tag == MEI_NAMESPACE + "note":
             # check pname and dur of note
 
-            if element1.attrib["pname"] != element2.attrib["pname"]:
-                return False
+            if 'pname' in element1.attrib and 'pname' in element2.attrib:
+                if element1.attrib["pname"] != element2.attrib["pname"]:
+                    return False
 
             if 'dur' in element1.attrib and 'dur' in element2.attrib:
                 if element1.attrib["dur"] != element2.attrib["dur"]:
@@ -326,12 +312,10 @@ def text_box_search_folder(path, tag, search_term):
 
         title = str(' '.join(str(e) for e in get_title(file)))
         creator = str(' '.join(str(e) for e in get_creator(file)))
-        measure_numbers = [element for element in tb_search_output_array]
+        measure_numbers = [int(element) for element in tb_search_output_array]
 
         if measure_numbers:
-            result_list.append(result(title, creator, measure_numbers))
-
-
+            result_list.append(result(title, creator, str(measure_numbers)[1:-1]))
     return result_list
 
 
@@ -346,7 +330,7 @@ def snippet_search_folder(path, input_tree):
     """
 
     file_list = get_mei_from_folder(path)
-    result = namedtuple('result', ['title', 'creator', 'measure_numbers'])
+    result = namedtuple('result', ['title', 'creator', 'measure_numbers', 'appearance'])
     result_list = []
 
     for file in file_list:
@@ -355,16 +339,10 @@ def snippet_search_folder(path, input_tree):
 
         title = str(' '.join(str(e) for e in get_title(file)))
         creator = str(' '.join(str(e) for e in get_creator(file)))
-        measure_numbers = [element for element in search_output_array]
+        measure_numbers = [int(element) for element in search_output_array]
+        appearance = len(measure_numbers)
 
         if measure_numbers:
-            result_list.append(result(title, creator, measure_numbers))
-
-        # key = str(' '.join(str(e) for e in get_title(file)) + " by " +
-        #                    ' '.join(str(e) for e in get_creator(file)) + '\n' + " Measure Number: ")
-        # if key in result_list:
-        #     result_list[key] = str(result_list[key] + "," + (element))
-        # else:
-        #     result_list[key] = element
+            result_list.append(result(title, creator, str(measure_numbers)[1:-1], appearance))
 
     return result_list
