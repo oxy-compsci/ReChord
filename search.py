@@ -312,10 +312,10 @@ def text_box_search_folder(path, tag, search_term):
 
         title = str(' '.join(str(e) for e in get_title(file)))
         creator = str(' '.join(str(e) for e in get_creator(file)))
-        measure_numbers = [element for element in tb_search_output_array]
+        measure_numbers = [int(element) for element in tb_search_output_array]
 
         if measure_numbers:
-            result_list.append(result(title, creator, measure_numbers))
+            result_list.append(result(title, creator, str(measure_numbers)[1:-1]))
     return result_list
 
 
@@ -339,10 +339,10 @@ def snippet_search_folder(path, input_tree):
 
         title = str(' '.join(str(e) for e in get_title(file)))
         creator = str(' '.join(str(e) for e in get_creator(file)))
-        measure_numbers = [element for element in search_output_array]
+        measure_numbers = [int(element) for element in search_output_array]
         appearance = len(measure_numbers)
 
         if measure_numbers:
-            result_list.append(result(title, creator, measure_numbers, appearance))
+            result_list.append(result(title, creator, str(measure_numbers)[1:-1], appearance))
 
     return result_list
