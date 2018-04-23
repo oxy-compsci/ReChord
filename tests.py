@@ -52,13 +52,13 @@ def positive_test_get_mei_from_folder():
 def positive_test_get_title():
     """Positive test for get_title"""
     title_list = get_title('database/test_files/Chopin.xml')
-    assert title_list, "get_title: title not found"
+    assert title_list != "Title Not Found", "get_title: title not found"
 
 
 def positive_test_get_creator():
     """Positive test for get_creator"""
     creator_list = get_creator('database/test_files/Chopin.xml')
-    assert creator_list, "get_creator: creator (composer) not found"
+    assert creator_list != "Creator Not Found", "get_creator: creator (composer) not found"
 
 
 def positive_test_check_element_match():
