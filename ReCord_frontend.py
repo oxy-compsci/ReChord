@@ -12,7 +12,7 @@ from search import text_box_search_folder, snippet_search_folder
 ALLOWED_EXTENSIONS = {'xml', 'mei'}
 
 # initiate the app
-app = Flask(__name__) # pylint: disable=invalid-name
+app = Flask(__name__)  # pylint: disable=invalid-name
 app.secret_key = '\x82\xebT\x17\x07\xbbx\xd9\xe1dxR\x11\x8b\x0ci\xe1\xb7\xa8\x97\n\xd6\x01\x99'
 
 
@@ -80,7 +80,8 @@ def get_mei_from_folder(path):
     Arguments: path [string]: absolute or relative path to folder
     Returns: all_mei_files: List<file>: list of mei files in path
     """
-    return [path + "/" + filename for filename in os.listdir(path) if filename.endswith('.mei') or filename.endswith('.xml')]
+    return [path + "/" + filename for filename in os.listdir(path) if
+            filename.endswith('.mei') or filename.endswith('.xml')]
 
 
 def search_snippet(path, snippet):
@@ -95,7 +96,7 @@ def search_snippet(path, snippet):
 
     named_tuples_ls = snippet_search_folder(path, input_xml_tree)
 
-    return render_template('ReChord_result.html',origins=named_tuples_ls)
+    return render_template('ReChord_result.html', origins=named_tuples_ls)
 
 
 # todo: parse named tuples list for term search
@@ -107,11 +108,9 @@ def search_terms(path, tag, para):
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
-    print(para)
     results = text_box_search_folder(path, tag, para)
-    print(results)
 
-    return render_template('ReChord_term.html', results=results)
+    return render_template('ReChord_result.html', origins=results)
 
 
 def upload_file(name_tag, tmpdirname):
