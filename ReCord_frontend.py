@@ -40,8 +40,6 @@ def my_form_post():
     Return: rendered result page 'ReChord_result.html' by call on helper functions
     """
 
-    # todo: Need to iterate multiple user submitted files
-
     # tab1 snippet search
     if request.form['submit'] == 'Search Snippet In Our Database':
         path = 'database/MEI_Complete_examples'
@@ -60,7 +58,7 @@ def my_form_post():
         path = 'database/MEI_Complete_examples'
         return search_terms(path, tag, para)
 
-    # todo: add tempfile upload html parsing for term search
+    # tab2 terms search with user submitted library
     elif request.form['submit'] == 'Upload and Search Parameter':
         tag = request.form['term']
         para = request.form['parameter']
@@ -99,7 +97,6 @@ def search_snippet(path, snippet):
     return render_template('ReChord_result.html', origins=named_tuples_ls)
 
 
-# todo: parse named tuples list for term search
 def search_terms(path, tag, para):
     """ search terms in the database
     Arguments:
