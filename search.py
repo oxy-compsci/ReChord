@@ -5,6 +5,8 @@ import os
 import ast
 from collections import namedtuple
 from lxml import etree
+
+
 MEI_NAMESPACE = '{http://www.music-encoding.org/ns/mei}'
 
 # Generic Functions
@@ -27,6 +29,8 @@ def prepare_tree(xml_file_path):
     tree = etree.parse(xml_file_path)
     root = tree.getroot()
     return tree, root
+
+
 
 
 def root_to_list(root):
