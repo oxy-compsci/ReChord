@@ -325,7 +325,7 @@ def text_box_search_folder(path, tag, search_term):
         measure_numbers = [int(element) for element in tb_search_output_array]
 
         if measure_numbers:
-            result_list.append(result(title, creator, str(measure_numbers)[1:-1]))
+            result_list.append(result(file_name, title, creator, str(measure_numbers)[1:-1]))
     return result_list
 
 
@@ -354,6 +354,6 @@ def snippet_search_folder(path, input_tree):
         appearance = len(measure_numbers)
 
         if measure_numbers:
-            result_list.append(result(title, creator, str(measure_numbers)[1:-1], appearance))
+            result_list.append(result(file_name, title, creator, str(measure_numbers)[1:-1], appearance))
 
     return result_list
