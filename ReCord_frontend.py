@@ -98,7 +98,8 @@ def search_snippet(path, snippet):
         return render_template('ReChord_result.html', origins=named_tuples_ls)
 
     except (etree.XMLSyntaxError, ValueError):
-        print("Invalid XML")
+        return render_template('ReChord_result.html', errors="Invalid XML Snippet Inputs. Please double check the source and try it again!")
+
 
 def search_terms(path, tag, para):
     """ search terms in the database
