@@ -94,9 +94,12 @@ def search_snippet(path, snippet):
         input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
 
         named_tuples_ls = snippet_search_folder(path, input_xml_tree)
-
-        return render_template('ReChord_result.html', origins=named_tuples_ls)
-
+        total_appearance = len(named_tuples_ls)
+        if total_appearance != 0:
+            return render_template('ReChord_result.html', origins=named_tuples_ls)
+        else:
+            not_found = "No matched snippet found, maybe try something else?"
+            return  render_template('ReChord_result.html', nomatch=not_found)
     except (etree.XMLSyntaxError, ValueError):
         return render_template('ReChord_result.html', errors="Invalid XML Snippet Inputs. Please double check the source and try it again!")
 
@@ -111,8 +114,12 @@ def search_terms(path, tag, para):
     """
     results = text_box_search_folder(path, tag, para)
 
-    return render_template('ReChord_result.html', origins=results)
-
+    total_appearance = len(results)
+    if total_appearance != 0:
+        return render_template('ReChord_result.html', origins=results)
+    else:
+        not_found = "No matched term found, maybe try something else?"
+        return render_template('ReChord_result.html', nomatch=not_found)
 
 def upload_file(name_tag, tmpdirname):
     """pass the upload files and store them in uploads folder's unique sub-folder
