@@ -5,6 +5,8 @@ import os
 import ast
 from collections import namedtuple
 from lxml import etree
+
+
 MEI_NAMESPACE = '{http://www.music-encoding.org/ns/mei}'
 
 # Generic Functions
@@ -27,6 +29,8 @@ def prepare_tree(xml_file_path):
     tree = etree.parse(xml_file_path)
     root = tree.getroot()
     return tree, root
+
+
 
 
 def root_to_list(root):
@@ -94,6 +98,8 @@ def get_title(path):
     """
     tree, _ = prepare_tree(path)
     title_stmt = get_elements(tree, 'titleStmt')
+    if not title_stmt:
+        return "Title Not Found"
     first = title_stmt[0]
     arr = first.getchildren()
     title_list = [element.text for element in arr if element.tag == "{http://www.music-encoding.org/ns/mei}title"]
@@ -106,6 +112,8 @@ def get_creator(path):
     Return: creators_list [List<element>]: List of elements marking the creator(s) of a piece
     """
     tree, _ = prepare_tree(path)
+    if not get_elements(tree, 'respStmt'):
+        return "Creator Not Found"
     children = get_elements(tree, 'respStmt')[0].getchildren()
     creators_list = [element.text for element in children if element.attrib['role'] == "creator"]
     return creators_list
@@ -303,19 +311,21 @@ def text_box_search_folder(path, tag, search_term):
     """
 
     file_list = get_mei_from_folder(path)
-    result = namedtuple('result', ['title', 'creator', 'measure_numbers'])
+    result = namedtuple('result', ['file_name', 'title', 'creator', 'measure_numbers'])
     result_list = []
 
     for file in file_list:
         tree, _ = prepare_tree(file)
+
         tb_search_output_array = text_box_search(tree, tag, search_term)
 
+        file_name = str(file.split("/")[-1])
         title = str(' '.join(str(e) for e in get_title(file)))
         creator = str(' '.join(str(e) for e in get_creator(file)))
         measure_numbers = [int(element) for element in tb_search_output_array]
 
         if measure_numbers:
-            result_list.append(result(title, creator, str(measure_numbers)[1:-1]))
+            result_list.append(result(file_name, title, creator, str(measure_numbers)[1:-1]))
     return result_list
 
 
@@ -330,19 +340,20 @@ def snippet_search_folder(path, input_tree):
     """
 
     file_list = get_mei_from_folder(path)
-    result = namedtuple('result', ['title', 'creator', 'measure_numbers', 'appearance'])
+    result = namedtuple('result', ['file_name', 'title', 'creator', 'measure_numbers', 'appearance'])
     result_list = []
 
     for file in file_list:
         tree, _ = prepare_tree(file)
         search_output_array = search(input_tree, tree)
 
+        file_name = str(file.split("/")[-1])
         title = str(' '.join(str(e) for e in get_title(file)))
         creator = str(' '.join(str(e) for e in get_creator(file)))
         measure_numbers = [int(element) for element in search_output_array]
         appearance = len(measure_numbers)
 
         if measure_numbers:
-            result_list.append(result(title, creator, str(measure_numbers)[1:-1], appearance))
+            result_list.append(result(file_name, title, creator, str(measure_numbers)[1:-1], appearance))
 
     return result_list

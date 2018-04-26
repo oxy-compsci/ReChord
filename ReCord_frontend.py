@@ -7,7 +7,7 @@ from io import BytesIO
 from flask import Flask, request, render_template, flash, redirect, abort
 from werkzeug.utils import secure_filename
 from lxml import etree
-from search import text_box_search_folder, snippet_search_folder
+from search import text_box_search_folder, snippet_search_folder, prepare_tree
 
 ALLOWED_EXTENSIONS = {'xml', 'mei'}
 
@@ -40,8 +40,6 @@ def my_form_post():
     Return: rendered result page 'ReChord_result.html' by call on helper functions
     """
 
-    # todo: Need to iterate multiple user submitted files
-
     # tab1 snippet search
     if request.form['submit'] == 'Search Snippet In Our Database':
         path = 'database/MEI_Complete_examples'
@@ -60,7 +58,7 @@ def my_form_post():
         path = 'database/MEI_Complete_examples'
         return search_terms(path, tag, para)
 
-    # todo: add tempfile upload html parsing for term search
+    # tab2 terms search with user submitted library
     elif request.form['submit'] == 'Upload and Search Parameter':
         tag = request.form['term']
         para = request.form['parameter']
@@ -92,14 +90,20 @@ def search_snippet(path, snippet):
     Return: rendered result page 'ReChord_result.html'
     """
     xml = BytesIO(snippet.encode())
-    input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
+    try:
+        input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
 
-    named_tuples_ls = snippet_search_folder(path, input_xml_tree)
+        named_tuples_ls = snippet_search_folder(path, input_xml_tree)
+        total_appearance = len(named_tuples_ls)
+        if total_appearance != 0:
+            return render_template('ReChord_result.html', origins=named_tuples_ls)
+        else:
+            not_found = "No matched snippet found, maybe try something else?"
+            return  render_template('ReChord_result.html', nomatch=not_found)
+    except (etree.XMLSyntaxError, ValueError):
+        return render_template('ReChord_result.html', errors="Invalid XML Snippet Inputs. Please double check the source and try it again!")
 
-    return render_template('ReChord_result.html', origins=named_tuples_ls)
 
-
-# todo: parse named tuples list for term search
 def search_terms(path, tag, para):
     """ search terms in the database
     Arguments:
@@ -110,8 +114,12 @@ def search_terms(path, tag, para):
     """
     results = text_box_search_folder(path, tag, para)
 
-    return render_template('ReChord_result.html', origins=results)
-
+    total_appearance = len(results)
+    if total_appearance != 0:
+        return render_template('ReChord_result.html', origins=results)
+    else:
+        not_found = "No matched term found, maybe try something else?"
+        return render_template('ReChord_result.html', nomatch=not_found)
 
 def upload_file(name_tag, tmpdirname):
     """pass the upload files and store them in uploads folder's unique sub-folder

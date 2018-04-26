@@ -180,7 +180,7 @@
     </div>
     <!--Search Results-->
     <div class="w3-display-right-result" style="width:50%">
-        <h2 style="padding-left:15px"> Here Are Your Search Results:</h2>
+        <h2 style="padding-left:15px"> Search Results:</h2>
         <br>
         <br>
 
@@ -196,12 +196,15 @@
             {% for origin in origins %}
             <tr>
                 <td>{{origin.appearance}}</td>
-                <td>{{origin.title}}</td>
+                <td>{{origin.title}}<br><strong>File Name: </strong><i>{{origin.file_name}}</i></td>
                 <td>{{origin.creator}}</td>
                 <td>{{origin.measure_numbers}}</td>
             </tr>
             {% endfor %}
         </table>
+        <br>
+        <h4 style="padding:10px">{{errors}}</h4>
+        <h4 style="padding:10px">{{nomatch}}</h4>
 
 
     </div>
