@@ -48,8 +48,12 @@ def my_form_post():
     # tab1 snippet search using user submitted library
     elif request.form['submit'] == 'Upload and Search Your Snippet':
         with tempfile.TemporaryDirectory() as tmpdirname:
-            path = upload_file("base_file", tmpdirname)
-            return search_snippet(path, request.form['text'])
+            try:
+                path = upload_file("base_file", tmpdirname)
+                return search_snippet(path, request.form['text'])
+            except NameError as error_msg:
+                return render_template('ReChord_result.html', errors=str(error_msg))
+
 
     # tab2 terms search
     elif request.form['submit'] == 'Search Parameter':
@@ -63,8 +67,12 @@ def my_form_post():
         tag = request.form['term']
         para = request.form['parameter']
         with tempfile.TemporaryDirectory() as tmpdirname:
-            path = upload_file("base_file", tmpdirname)
-            return search_terms(path, tag, para)
+            try:
+                path = upload_file("base_file", tmpdirname)
+                return search_terms(path, tag, para)
+            except NameError as error_msg:
+                return render_template('ReChord_result.html', errors=str(error_msg))
+
 
     else:
         abort(404)
@@ -126,7 +134,6 @@ def upload_file(name_tag, tmpdirname):
     Arguments: name_tag that used in html
     Return: upload path name
     """
-
     # check if the post request has the file part
     if 'base_file' not in request.files:
         flash('No file part')
@@ -141,8 +148,11 @@ def upload_file(name_tag, tmpdirname):
                 return redirect(request.url)
 
             # if properly uploaded
-            elif file and allowed_file(file.filename):
-                file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+            elif file:
+                if allowed_file(file.filename):
+                    file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+                else:
+                    raise NameError(file.filename + ' is not a allowed name or the file extension is not .mei or .xml.')
         return tmpdirname
 
 
