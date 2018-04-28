@@ -1,1 +1,1 @@
-web: gunicorn app:ReChord_frontend
+web: gunicorn ReChord_frontend:app
