@@ -1,1 +1,1 @@
-web: gunicorn ReChord_frontend.py
+web: gunicorn app:ReChord_frontend
