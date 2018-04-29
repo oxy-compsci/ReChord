@@ -56,7 +56,7 @@ def my_form_post():
 
 
     # tab2 terms search
-    elif request.form['submit'] == 'Search Parameter':
+    elif request.form['submit'] == 'Search Parameter In Our Database':
         tag = request.form['term']
         para = request.form['parameter']
         path = 'database/MEI_Complete_examples'
