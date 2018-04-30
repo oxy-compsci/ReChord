@@ -73,7 +73,6 @@ def my_form_post():
             except NameError as error_msg:
                 return render_template('ReChord_result.html', errors=str(error_msg))
 
-
     else:
         abort(404)
         return None
@@ -108,7 +107,7 @@ def search_snippet(path, snippet):
         else:
             not_found = "No matched snippet found, maybe try something else?"
             return  render_template('ReChord_result.html', nomatch=not_found)
-    except (etree.XMLSyntaxError, ValueError):
+    except (etree.XMLSyntaxError, ValueError, KeyError):
         return render_template('ReChord_result.html', errors="Invalid XML Snippet Inputs. Please double check the source and try it again!")
 
 
