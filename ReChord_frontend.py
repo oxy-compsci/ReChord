@@ -72,8 +72,6 @@ def my_form_post():
                 return search_terms(path, tag, para)
             except NameError as error_msg:
                 return render_template('ReChord_result.html', errors=str(error_msg))
-
-
     else:
         abort(404)
         return None
