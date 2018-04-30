@@ -128,10 +128,10 @@ def search_terms(path, tag, para):
 
     total_appearance = len(results)
     if total_appearance != 0:
-        return render_template('ReChord_result.html/#result', origins=results)
+        return render_template('ReChord_result.html', origins=results)
     else:
         not_found = "No matched term found, maybe try something else?"
-        return render_template('ReChord_result.html/#result', nomatch=not_found)
+        return render_template('ReChord_result.html', nomatch=not_found)
 
 def upload_file(name_tag, tmpdirname):
     """pass the upload files and store them in uploads folder's unique sub-folder

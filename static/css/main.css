@@ -3253,19 +3253,19 @@
 		}
 
 		.wrapper.style1 {
-			background-color: #4253a6;
+			background-color: #3CA792;
 		}
 
         .wrapper.database {
-            background-color: #bd5422;
+            background-color: #DB5f46;
         }
 
         .wrapper.user_database {
-            background-color: #0d6763;
+            background-color: #393a52;
         }
 
 		.wrapper.style1-alt {
-			background-color: #493382;
+			background-color: #3CA792;
 		}
 
 		.wrapper.style2 {
@@ -3277,7 +3277,7 @@
 		}
 
 		.wrapper.style3 {
-			background-color: #b74e91;
+			background-color: #60756e;
 		}
 
 		.wrapper.style3-alt {
@@ -3542,7 +3542,7 @@
 
 	#sidebar {
 		padding: 2.5em 2.5em 0.5em 2.5em ;
-		background: #312450;
+		background: #3e3e3e;
 		cursor: default;
 		height: 100vh;
 		left: 0;
