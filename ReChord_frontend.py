@@ -30,7 +30,7 @@ def my_form():
     """render front page template
     Return: rendered front page 'ReChord_front.html'
     """
-    return render_template('ReChord_front.html')
+    return render_template('index.html')
 
 
 @app.route('/', methods=['POST'])
@@ -56,7 +56,7 @@ def my_form_post():
 
 
     # tab2 terms search
-    elif request.form['submit'] == 'Search Parameter In Our Database':
+    elif request.form['submit'] == 'Upload and Search Your Snippet':
         tag = request.form['term']
         para = request.form['parameter']
         path = 'database/MEI_Complete_examples'

@@ -10,12 +10,18 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!--[if lte IE 8]>
-    <script src="assets/js/ie/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" href="assets/css/main.css"/>
+    <script src="{{url_for('static', filename='js/ie/html5shiv.js')}}"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="assets/css/ie9.css"/><![endif]-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie9.css') }}"><![endif]-->
     <!--[if lte IE 8]>
-    <link rel="stylesheet" href="assets/css/ie8.css"/><![endif]-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie8.css') }}"><![endif]-->
+
+
+
+
+
+
 </head>
 <body>
 
@@ -85,15 +91,15 @@
                             <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
                                    required>
                         </div>
-                            <input type="submit" name="submit" value="Search Parameter In Our Database"
-                            style="background-color: black;">
+                        <input type="submit" name="submit" value="Search Parameter In Our Database"
+                               style="background-color: black;">
                     </form>
                 </section>
             </div>
         </div>
     </section>
 
-        <!--Search in User Database-->
+    <!--Search in User Database-->
     <section id="user_database" class="wrapper user_database fade-up">
         <div class="inner">
             <center><h1><i>User Database Search</i></h1></center>
@@ -101,19 +107,18 @@
                 <section>
                     <h2>Paste your MEI and upload files</h2>
                     <div class="w3-row-padding" style="margin:0 -2px;">
-                            <div class="w3-full">
-                                <form method="POST" enctype="multipart/form-data">
-                                    <textarea name="text" rows="9" cols="80" required></textarea>
-                                    <br>
-                                    <input type="file" name="base_file" multiple="">
-                                    <input type="submit" name="submit" value="Upload and Search Your Snippet">
-                                </form>
-                            </div>
+                        <div class="w3-full">
+                            <form method="POST" enctype="multipart/form-data">
+                                <textarea name="text" rows="9" cols="80" required></textarea>
+                                <br>
+                                <input type="file" name="base_file" multiple="">
+                                <input type="submit" name="submit" value="Upload and Search Your Snippet">
+                            </form>
                         </div>
+                    </div>
                 </section>
                 <section>
-                    <!--<span class="fa fa-pencil-square-o"></span>-->
-                    <h2>Select music terms and parameters to search</h2>
+                    <h2>Upload files and input parameters to search</h2>
                     <form method="POST">
                         <div style="padding: 20px 0 40px 0;">
                             <select name="term">
@@ -129,8 +134,8 @@
                             <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
                                    required>
                         </div>
-                            <input type="submit" name="submit" value="Search Parameter In Our Database"
-                            style="background-color: black;">
+                        <input type="file" name="base_file" multiple="">
+                        <input type="submit" name="submit" value="Upload and Search Parameter">
                     </form>
                 </section>
             </div>
@@ -303,14 +308,14 @@
 </footer>
 
 <!-- Scripts -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/jquery.scrolly.min.js"></script>
-<script src="assets/js/skel.min.js"></script>
-<script src="assets/js/util.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/jquery.scrollex.min.js"></script>
+<script src="static/js/jquery.scrolly.min.js"></script>
+<script src="static/js/skel.min.js"></script>
+<script src="static/js/util.js"></script>
 <!--[if lte IE 8]>
-<script src="assets/js/ie/respond.min.js"></script><![endif]-->
-<script src="assets/js/main.js"></script>
+<script src="static/js/ie/respond.min.js"></script><![endif]-->
+<script src="static/js/main.js"></script>
 
 </body>
 </html>
