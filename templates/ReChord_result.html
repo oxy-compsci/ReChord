@@ -5,7 +5,7 @@
 -->
 <html>
 <head>
-    <title>Result - Project ReChord - MEI Search Engine</title>
+    <title>Project ReChord - MEI Search Engine</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!--[if lte IE 8]>
@@ -18,44 +18,47 @@
 
 </head>
 
-<!--load custom CSS-->
 <style>
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    }
 
     tr:nth-child(even) {
     background-color: #dddddd;
     }
-
-    <!--Accordion Active Color-->
-    .ui-state-active {
-    border: 1px solid #87ceeb;
-    background: #4caf4f;
-    font-weight: normal;
-    color: #ffffff;
-    }
-
 </style>
 <body>
 
+<!-- Sidebar -->
 <section id="sidebar">
     <div class="inner">
         <nav>
             <ul>
-                <li><a href="#result">Search Result</a></li>
-                <li><a href="#default_database">ReChord's Database</a></li>
-                <li><a href="#user_database">User Database</a></li>
-                <li><a href="#one">Who we are</a></li>
-                <li><a href="#two">What we do</a></li>
-                <li><a href="#three">Get in touch</a></li>
+                <li><a href="#result">Search Results</a></li>
+                <li><a href="#default_database">Search Our Database</a></li>
+                <li><a href="#user_database">Search Your Database</a></li>
+                <li><a href="#one">Tab1</a></li>
+                <li><a href="#two">Tab2</a></li>
+                <li><a href="#three">Tab3</a></li>
             </ul>
         </nav>
     </div>
 </section>
 
-
-<section id="result" class="wrapper style1 fade-up">
-    <div class="inner">
-        <center><h1><i>Search Results</i></h1></center>
-        <center>
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- Two -->
+    <section id="result" class="wrapper style3 fullscreen fade-up">
+        <div class="inner">
+            <center><h1><i>Search Results</i></h1></center>
             <table>
                 <tr>
                     <th>Numbers of Matching</th>
@@ -77,10 +80,203 @@
             <br>
             <h4 style="padding:10px">{{errors}}</h4>
             <h4 style="padding:10px">{{nomatch}}</h4>
+        </div>
 
-        </center>
-    </div>
-</section>
+        <center><ul class="actions">
+            <li><a href="#default_database" class="button">New Search in ReChord</a></li>
+            <li><a href="#user_database" class="button">New Search in Your Database</a></li>
+        </ul></center>
+    </section>
+
+    <!--Search in ReChord's Database-->
+    <section id="default_database" class="wrapper database fade-up">
+        <div class="inner">
+            <center><h1><i>ReChord Database Search</i></h1></center>
+            <div class="features">
+                <section>
+                    <h2>Paste your MEI snippet to search</h2>
+                    <div class="w3-row-padding" style="margin:0 -2px;">
+                        <div class="w3-full">
+                            <form method="POST">
+                                <textarea name="text" rows="7" cols="80" required></textarea>
+                                <br>
+                                <input type="submit" name="submit" value="Search Snippet In Our Database"
+                                       style="background-color: black;">
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Select music terms and parameters to search</h2>
+                    <form method="POST">
+                        <div style="padding: 20px 0 40px 0;">
+                            <select name="term">
+                                <option value="">Select your term</option>
+                                <option value="Expressive Terms">Expressive Terms</option>
+                                <option value="Tempo Marking">Tempo Marking</option>
+                                <option value="Articulation">Articulation</option>
+                                <option value="Dynamic Markings">Dynamic Markings</option>
+                                <option value="Piano Fingerings">Piano Fingerings</option>
+                                <option value="Pedal Marking">Pedal Marking</option>
+                                <option value="Hairpin">Hairpin</option>
+                            </select>
+                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
+                                   required>
+                        </div>
+                        <input type="submit" name="submit" value="Search Terms In Our Database"
+                               style="background-color: black;">
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!--Search in User Database-->
+    <section id="user_database" class="wrapper user_database fade-up">
+        <div class="inner">
+            <center><h1><i>User Database Search</i></h1></center>
+            <div class="features">
+                <section>
+                    <h2>Paste your MEI and upload files</h2>
+                    <div class="w3-row-padding" style="margin:0 -2px;">
+                        <div class="w3-full">
+                            <form method="POST" enctype="multipart/form-data">
+                                <textarea name="text" rows="9" cols="80" required></textarea>
+                                <br>
+                                <input type="file" name="base_file" multiple="" required>
+                                <input type="submit" name="submit" value="Upload and Search Your Snippet">
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Upload files and input parameters to search</h2>
+                    <form method="POST" enctype="multipart/form-data">
+                        <div style="padding: 20px 0 40px 0;">
+                            <select name="term">
+                                <option value="">Select your term</option>
+                                <option value="Expressive Terms">Expressive Terms</option>
+                                <option value="Tempo Marking">Tempo Marking</option>
+                                <option value="Articulation">Articulation</option>
+                                <option value="Dynamic Markings">Dynamic Markings</option>
+                                <option value="Piano Fingerings">Piano Fingerings</option>
+                                <option value="Pedal Marking">Pedal Marking</option>
+                                <option value="Hairpin">Hairpin</option>
+                            </select>
+                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
+                                   required>
+                        </div>
+                        <input type="file" name="base_file" multiple="" required>
+                        <input type="submit" name="submit" value="Upload and Search Parameter">
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+
+    <!-- One -->
+    <section id="one" class="wrapper style2 spotlights">
+        <section>
+            <a href="#" class="image"><img src="images/database.jpeg" alt="" data-position="center center"/></a>
+            <div class="content">
+                <div class="inner">
+                    <h2>Sed ipsum dolor</h2>
+                    <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat
+                        malesuada quis. Aliquam dapibus.</p>
+                    <ul class="actions">
+                        <li><a href="#" class="button">Learn more</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section>
+            <a href="#" class="image"><img src="images/pic02.jpg" alt="" data-position="top center"/></a>
+            <div class="content">
+                <div class="inner">
+                    <h2>Feugiat consequat</h2>
+                    <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat
+                        malesuada quis. Aliquam dapibus.</p>
+                    <ul class="actions">
+                        <li><a href="#" class="button">Learn more</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section>
+            <a href="#" class="image"><img src="images/pic03.jpg" alt="" data-position="25% 25%"/></a>
+            <div class="content">
+                <div class="inner">
+                    <h2>Ultricies aliquam</h2>
+                    <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat
+                        malesuada quis. Aliquam dapibus.</p>
+                    <ul class="actions">
+                        <li><a href="#" class="button">Learn more</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- Three -->
+    <section id="three" class="wrapper style1 fade-up">
+        <div class="inner">
+            <h2>Get in touch</h2>
+            <p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada
+                quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit
+                quis lorem.</p>
+            <div class="split style1">
+                <section>
+                    <form method="post" action="#">
+                        <div class="field half first">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name"/>
+                        </div>
+                        <div class="field half">
+                            <label for="email">Email</label>
+                            <input type="text" name="email" id="email"/>
+                        </div>
+                        <div class="field">
+                            <label for="message">Message</label>
+                            <textarea name="message" id="message" rows="5"></textarea>
+                        </div>
+                        <ul class="actions">
+                            <li><a href="" class="button submit">Send Message</a></li>
+                        </ul>
+                    </form>
+                </section>
+                <section>
+                    <ul class="contact">
+                        <li>
+                            <h3>Address</h3>
+                            <span>12345 Somewhere Road #654<br/>
+											Nashville, TN 00000-0000<br/>
+											USA</span>
+                        </li>
+                        <li>
+                            <h3>Email</h3>
+                            <a href="#">user@untitled.tld</a>
+                        </li>
+                        <li>
+                            <h3>Phone</h3>
+                            <span>(000) 000-0000</span>
+                        </li>
+                        <li>
+                            <h3>Social</h3>
+                            <ul class="icons">
+                                <li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li>
+                                <li><a href="#" class="fa-facebook"><span class="label">Facebook</span></a></li>
+                                <li><a href="#" class="fa-github"><span class="label">GitHub</span></a></li>
+                                <li><a href="#" class="fa-instagram"><span class="label">Instagram</span></a></li>
+                                <li><a href="#" class="fa-linkedin"><span class="label">LinkedIn</span></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </section>
+
+</div>
 
 <!-- Footer -->
 <footer id="footer" class="wrapper style1-alt">
@@ -91,7 +287,6 @@
         </ul>
     </div>
 </footer>
-
 
 <!-- Scripts -->
 <script src="static/js/jquery.min.js"></script>
