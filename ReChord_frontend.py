@@ -104,9 +104,16 @@ def search_snippet(path, snippet):
             return render_template('ReChord_result.html', origins=named_tuples_ls)
         else:
             not_found = "No matched snippet found, maybe try something else?"
-            return render_template('ReChord_result.html', nomatch=not_found)
-    except (etree.XMLSyntaxError, ValueError):
-        return render_template('ReChord_result.html', errors="Invalid XML Snippet Inputs. Please double check the source and try it again!")
+            return  render_template('ReChord_result.html', nomatch=not_found)
+    except:
+        if etree.XMLSyntaxError or ValueError:
+            error_msg = "Invalid MEI snippet inputs. Please double check the source and try it again!"
+        elif KeyError:
+            error_msg = "Invalid upload file. Please double check the source and try it again!"
+        else:
+            error_msg = "There are some errors in the search. Please check the source."
+
+        return render_template('ReChord_result.html', errors=error_msg)
 
 
 def search_terms(path, tag, para):
