@@ -40,12 +40,19 @@ def my_form_post():
     Return: rendered result page 'ReChord_result.html' by call on helper functions
     """
 
-    # tab1 snippet search
+    # Snippet search in ReChord Database
     if request.form['submit'] == 'Search Snippet In Our Database':
         path = 'database/MEI_Complete_examples'
         return search_snippet(path, request.form['text'])
 
-    # tab1 snippet search using user submitted library
+    # Terms search in ReChord Database
+    elif request.form['submit'] == 'Search Terms In Our Database':
+        tag = request.form['term']
+        para = request.form['parameter']
+        path = 'database/MEI_Complete_examples'
+        return search_terms(path, tag, para)
+
+    # Snippet search using user submitted library
     elif request.form['submit'] == 'Upload and Search Your Snippet':
         with tempfile.TemporaryDirectory() as tmpdirname:
             try:
@@ -54,15 +61,7 @@ def my_form_post():
             except NameError as error_msg:
                 return render_template('ReChord_result.html', errors=str(error_msg))
 
-
-    # tab2 terms search
-    elif request.form['submit'] == 'Upload and Search Your Snippet':
-        tag = request.form['term']
-        para = request.form['parameter']
-        path = 'database/MEI_Complete_examples'
-        return search_terms(path, tag, para)
-
-    # tab2 terms search with user submitted library
+    # Terms search with user submitted library
     elif request.form['submit'] == 'Upload and Search Parameter':
         tag = request.form['term']
         para = request.form['parameter']
