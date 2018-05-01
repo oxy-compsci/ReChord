@@ -34,7 +34,7 @@ def my_form():
 
 
 @app.route('/', methods=['POST'])
-def my_form_post():   # pylint: disable=(too-many-return-statements)
+def my_form_post():   # pylint: disable=too-many-return-statements
     """the view function which return the result page by using the input pass to the back end
     Arguments: forms submitted in ReChord_front.html
     Return: rendered result page 'ReChord_result.html' by call on helper functions
