@@ -34,7 +34,7 @@ def my_form():
 
 
 @app.route('/', methods=['POST'])
-def my_form_post():
+def my_form_post():   # pylint: disable=(too-many-return-statements)
     """the view function which return the result page by using the input pass to the back end
     Arguments: forms submitted in ReChord_front.html
     Return: rendered result page 'ReChord_result.html' by call on helper functions
@@ -94,6 +94,7 @@ def search_snippet(path, snippet):
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
+    error_msg = ""
     xml = BytesIO(snippet.encode())
     try:
         input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
@@ -104,16 +105,12 @@ def search_snippet(path, snippet):
             return render_template('ReChord_result.html', origins=named_tuples_ls)
         else:
             not_found = "No matched snippet found, maybe try something else?"
-            return  render_template('ReChord_result.html', nomatch=not_found)
-    except:
-        if etree.XMLSyntaxError or ValueError:
-            error_msg = "Invalid MEI snippet inputs. Please double check the source and try it again!"
-        elif KeyError:
-            error_msg = "Invalid upload file. Please double check the source and try it again!"
-        else:
-            error_msg = "There are some errors in the search. Please check the source."
-
-        return render_template('ReChord_result.html', errors=error_msg)
+            return render_template('ReChord_result.html', nomatch=not_found)
+    except (etree.XMLSyntaxError, ValueError):
+        error_msg = "Invalid MEI snippet inputs. Please double check the source and try it again!"
+    except KeyError:
+        error_msg = "Invalid upload file. Please double check the source and try it again!"
+    return render_template('ReChord_result.html', errors=error_msg)
 
 
 def search_terms(path, tag, para):
@@ -126,12 +123,12 @@ def search_terms(path, tag, para):
     """
     results = text_box_search_folder(path, tag, para)
 
-    total_appearance = len(results)
-    if total_appearance != 0:
+    if results:
         return render_template('ReChord_result.html', origins=results)
     else:
         not_found = "No matched term found, maybe try something else?"
         return render_template('ReChord_result.html', nomatch=not_found)
+
 
 def upload_file(name_tag, tmpdirname):
     """pass the upload files and store them in uploads folder's unique sub-folder
