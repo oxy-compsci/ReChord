@@ -15,6 +15,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie9.css') }}"><![endif]-->
     <!--[if lte IE 8]>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie8.css') }}"><![endif]-->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">-->
 
 </head>
 <body>
@@ -95,14 +98,16 @@
         <div class="inner">
             <center><h1><i>Customized Database Search</i></h1></center>
             <form method="POST" enctype="multipart/form-data">
-                <input type="file" name="base_file" multiple="" required>
+                    <span class="btn btn-primary">
+                        <input type="file" name="base_file" multiple="">
+                    </span>
                 <div class="features">
                     <section>
                         <h2>MEI Snippet Search</h2>
                         <div class="w3-row-padding" style="margin:0 -2px;">
                             <div class="w3-full">
-                                <textarea name="text" rows="9" cols="80" placeholder="Paste your MEI snippet here"
-                                          required></textarea>
+                                <textarea name="text" rows="9" cols="80"
+                                          placeholder="Paste your MEI snippet here"></textarea>
                                 <br>
                                 <input type="submit" name="submit" value="Upload and Search Your Snippet">
                             </div>
@@ -123,7 +128,7 @@
                                 <option value="Hairpin">Hairpin</option>
                             </select>
                             <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here"
-                                   >
+                            >
                         </div>
                         <input type="submit" name="submit" value="Upload and Search Parameter">
 
