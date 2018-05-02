@@ -2419,10 +2419,11 @@
 
 	textarea {
 		padding: 0.75em 1em;
+		max-width: 100%
 	}
 
 		body.is-ie textarea {
-			min-height: 10em;
+			min-height: 100%;
 		}
 
 	input[type="checkbox"],
