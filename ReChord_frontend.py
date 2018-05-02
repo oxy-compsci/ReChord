@@ -100,12 +100,11 @@ def search_snippet(path, snippet):
         input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
 
         named_tuples_ls = snippet_search_folder(path, input_xml_tree)
-        total_appearance = len(named_tuples_ls)
-        if total_appearance != 0:
+        if named_tuples_ls:
             return render_template('ReChord_result.html', origins=named_tuples_ls)
         else:
-            not_found = "No matched snippet found, maybe try something else?"
-            return render_template('ReChord_result.html', nomatch=not_found)
+            error_msg = "No matched snippet found, maybe try something else?"
+            return render_template('ReChord_result.html', nomatch=error_msg)
     except (etree.XMLSyntaxError, ValueError):
         error_msg = "Invalid MEI snippet inputs. Please double check the source and try it again!"
     except KeyError:
