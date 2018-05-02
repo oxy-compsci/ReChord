@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<!--
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+    <title>Documentatiion - Project ReChord</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lte IE 8]>
+    <script src="{{url_for('static', filename='js/ie/html5shiv.js')}}"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie9.css') }}"><![endif]-->
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie8.css') }}"><![endif]-->
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <a href="index.html" class="title">Project ReChord</a>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="https://github.com/oxy-compsci/ReChord" target="_blank">More on GitHub</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Main -->
+    <section id="main" class="wrapper">
+        <div class="inner">
+            <h1 class="major">Documentations</h1>
+            <span class="image fit"><img src="images/pic04.jpg" alt=""/></span>
+            <b>ReChord is an app that aims to enable music historians to make search both notes and term search within
+                MEI
+                file.</b>
+            <ul>
+                <li>Deploy through Heroku</li>
+                <li>Common Searching Errors</li>
+                <li>Other Resources</li>
+            </ul>
+            Note: This Manual mainly target at those that are not familiar with coding. If that does not sound like you
+            and you prefer some more in depth explanation, please check out design document in our git <a
+                href="https://github.com/oxy-compsci/ReChord">repo</a>.
+            <hr/>
+            <h2>1. Common Errors</h2>
+            Here are some common issue that you would like to know for making a perfect search:
+            <h3>1.1 Snippet Search:</h3>
+            <ul>
+                <li>Note that Snippet search only cares about <em>pname </em>of the notes. Not other attributes.</li>
+                <li>The snippet you used to search is required to be a full .xml or .mei because the snippet is first
+                    parsed to a tree and then search against.
+                </li>
+                <li>Here is a simple acceptable snippet <a
+                        href="https://github.com/oxy-compsci/ReChord/blob/master/database/test_files/testinput.xml">sample</a>.
+                </li>
+            </ul>
+            <h3>1.2 Terms Search:</h3>
+            <ul>
+                <li style="list-style-type: none">
+                    <ul>
+                        <li>At the moment, ReChord do <strong>not</strong> support "Hairpin" and "Piano Fingering" term
+                            search.
+                        </li>
+                        <li>Terms search currently allow following categories:
+                            <ul>
+                                <li>Expressive Terms</li>
+                                <li>Articulation</li>
+                                <li>Dynamic Marking</li>
+                                <li>Tempo Marking</li>
+                                <li>Pedal Marking</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li>Not only do we allow exact term search, ReChord also has a built in dictionary to search for the
+                    <strong>acronyms/short-hand writings</strong> and vise versa.
+                </li>
+            </ul>
+            <h3>1.3 Upload Your Own Database:</h3>
+            <ul>
+                <li>If you are not uploading files to do search in, ReChord will search within <a
+                        href="https://github.com/music-encoding/sample-encodings/tree/master/MEI_3.0/Music/Complete_examples">MEI
+                    3.0.0. Complete examples</a>.
+                </li>
+                <li>Also, the MEI file you upload shall also be <strong>complete</strong> and <strong>parsable</strong>.
+                </li>
+                <li>You can upload multiple files at the same time, just be mindful that the files need to have
+                    <b>.mei </b>or <b>.xml </b>extension.
+                </li>
+                <li>The files you are upload are temporary and can only support one search on the app page.
+                    <ul>
+                        <li>If you have a database and would like to do frequent search within, please:
+                            <ol>
+                                <li><strong>clone</strong> your own branch of our Git repository</li>
+                                <li><strong>replace</strong> <em>database/MEI_complete_example </em>with your own folder
+                                    of files
+                                </li>
+                                <li>if you no longer use the original folder name:
+                                    <ul>
+                                        <li><strong>replace</strong> <em>"MEI_Complete_examples" </em>in my_form_post()
+                                            function in ReChord_frontend.py with your own folder name.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <h3>1.4 If there are any other problem regarding this app:</h3>
+            <ul>
+                <li>Since this project only requires Python and xml knowledge, feel free to ask your programming friends
+                    technical question and let them looking into our code. It should be easily understandable and
+                    fixable. (and let them do a Pull Request please)
+                </li>
+                <li>Feel free to report Issue on our git page.</li>
+            </ul>
+            <hr/>
+            <h2>2. Deploy the app through Heroku</h2>
+            This project is designed for users to deploy their own ReChord version through <a
+                href="http://www.heroku.com">Heroku</a>, a web app hosting cloud platform. This section will focus on
+            how to deploy this GitHub repo on heroku. If you are a pro, just skip this session.
+            <h3>Step 1: Sign up and Log in</h3>
+            We believe you! You got this.
+            <h3>Step 2: Create a new app</h3>
+            <h3></h3>
+            <img src="/static/images/new_app-1-1024x164.png" alt="" width="945"
+                 height="151"/>
+            <br>
+            Then on the managing projects page, <em>add a new project</em>. Heroku will prompt you to give a name for it
+            and then you would enter the dash board.
+            <h3>Step 3: In Dashboard...</h3>
+            <h4>Step 3.1: Connect to GitHub</h4>
+            Then in the <strong>Deploy</strong> tab in the <strong>Dashboard,</strong> Click on <strong>GitHub </strong>for
+            Deployment method.
+
+            <img class="size-large wp-image-5869 aligncenter"
+                 src="/static/images/dashboard_deploy-1024x462.png" alt="" width="945"
+                 height="426"/>
+            <br>
+            and then connect to your GitHub account.
+            <br>
+            <img class="size-large wp-image-5868 aligncenter"
+                 src="/static/images/connect_to_github-1024x439.png" alt="" width="945"
+                 height="405"/>
+            <h4>Step 3.2: Connect to your ReChord Git Branch</h4>
+            <img class="size-large wp-image-5867 aligncenter"
+                 src="/static/images/connect_to-git-1024x205.png" alt="" width="945"
+                 height="189"/>
+            <h4>Step 3.3: One-time deployment</h4>
+            After connect to the branch, scroll down to find manually deploy session. Click on <strong>Deploy
+            Branch</strong>. Then you are ready to go!
+
+            Be mindful that this manual deployment only run with the version of code in the branch. This means that if
+            you push to the branch again, the app will not deploy the new code. If you want to do so, you can click on
+            <strong>Enable Automatic Deploys</strong> instead.
+
+            <img class="size-large wp-image-5871 aligncenter"
+                 src="/static/images/deploy_branch-1-1024x496.png" alt="" width="945"
+                 height="458"/>
+            <br>
+            Now you can go to the setting and find the domain to check the app! Happy ReChording!
+            <h2>Other Resources</h2>
+            <ul>
+                <li>This project purely built on Music Encode Initiative (MEI) file encoding System.</li>
+                <li>Some other MEI related tool can be found <a href="http://music-encoding.org/resources/tools.html">here</a>.
+                </li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+<!-- Footer -->
+<footer id="footer" class="wrapper alt">
+    <div class="inner">
+        <ul class="menu">
+            <li>&copy; Project ReChord. All rights reserved.</li>
+            <li>Built by: Lijia Li, Nicholas Bethune, Yinbo Gao, Jack Neary</li>
+        </ul>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/jquery.scrollex.min.js"></script>
+<script src="static/js/jquery.scrolly.min.js"></script>
+<script src="static/js/skel.min.js"></script>
+<script src="static/js/util.js"></script>
+<!--[if lte IE 8]>
+<script src="static/js/ie/respond.min.js"></script><![endif]-->
+<script src="static/js/main.js"></script>
+</body>
+</html>
