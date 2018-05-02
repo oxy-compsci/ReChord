@@ -95,6 +95,7 @@ def search_snippet(path, snippet):
     Return: rendered result page 'ReChord_result.html'
     """
     xml = BytesIO(snippet.encode())
+    error_msg = ""
     try:
         input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
 
@@ -127,6 +128,7 @@ def search_terms(path, tag, para):
     else:
         not_found = "No matched term found, maybe try something else?"
         return render_template('ReChord_result.html', nomatch=not_found)
+    error_msg = ""
 
 
 def upload_file(name_tag, tmpdirname):
