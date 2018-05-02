@@ -19,7 +19,7 @@ app.secret_key = '\x82\xebT\x17\x07\xbbx\xd9\xe1dxR\x11\x8b\x0ci\xe1\xb7\xa8\x97
 def allowed_file(filename):
     """check the file name to avoid possible hack
     Arguments: uploaded file's name
-    Return: rendered result page 'ReChord_result.html'
+    Return: rendered result page 'result.html'
     """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -44,7 +44,7 @@ def documentation():
 def my_form_post():   # pylint: disable=too-many-return-statements
     """the view function which return the result page by using the input pass to the back end
     Arguments: forms submitted in index.html
-    Return: rendered result page 'ReChord_result.html' by call on helper functions
+    Return: rendered result page 'result.html' by call on helper functions
     """
 
     # Snippet search in ReChord Database
@@ -66,7 +66,7 @@ def my_form_post():   # pylint: disable=too-many-return-statements
                 path = upload_file("base_file", tmpdirname)
                 return search_snippet(path, request.form['text'])
             except NameError as error_msg:
-                return render_template('ReChord_result.html', errors=str(error_msg))
+                return render_template('result.html', errors=str(error_msg))
 
     # Terms search with user submitted library
     elif request.form['submit'] == 'Upload and Search Parameter':
@@ -77,7 +77,7 @@ def my_form_post():   # pylint: disable=too-many-return-statements
                 path = upload_file("base_file", tmpdirname)
                 return search_terms(path, tag, para)
             except NameError as error_msg:
-                return render_template('ReChord_result.html', errors=str(error_msg))
+                return render_template('result.html', errors=str(error_msg))
     else:
         abort(404)
         return None
@@ -99,7 +99,7 @@ def search_snippet(path, snippet):
     Arguments:
         snippet of xml that want to search for
         tree of xml base that needed to be searched in
-    Return: rendered result page 'ReChord_result.html'
+    Return: rendered result page 'result.html'
     """
     xml = BytesIO(snippet.encode())
     error_msg = ""
@@ -108,15 +108,15 @@ def search_snippet(path, snippet):
 
         named_tuples_ls = snippet_search_folder(path, input_xml_tree)
         if named_tuples_ls:
-            return render_template('ReChord_result.html', origins=named_tuples_ls)
+            return render_template('result.html', origins=named_tuples_ls)
         else:
             error_msg = "No matched snippet found, maybe try something else?"
-            return render_template('ReChord_result.html', nomatch=error_msg)
+            return render_template('result.html', nomatch=error_msg)
     except (etree.XMLSyntaxError, ValueError):
         error_msg = "Invalid MEI snippet inputs. Please double check the source and try it again!"
     except KeyError:
         error_msg = "Invalid upload file. Please double check the source and try it again!"
-    return render_template('ReChord_result.html', errors=error_msg)
+    return render_template('result.html', errors=error_msg)
 
 
 def search_terms(path, tag, para):
@@ -125,19 +125,19 @@ def search_terms(path, tag, para):
         tags of term that want to search for
         para(meters) of tags that want to search for
         tree of xml base that needed to be searched in
-    Return: rendered result page 'ReChord_result.html'
+    Return: rendered result page 'result.html'
     """
     error_msg = ""
     try:
         named_tuples_ls = text_box_search_folder(path, tag, para)
         if named_tuples_ls:
-            return render_template('ReChord_result.html', origins=named_tuples_ls)
+            return render_template('result.html', origins=named_tuples_ls)
         else:
             error_msg = "No matched term found, maybe try something else?"
-            return render_template('ReChord_result.html', nomatch=error_msg)
+            return render_template('result.html', nomatch=error_msg)
     except KeyError:
         error_msg = "Invalid upload file. Please double check the source and try it again!"
-    return render_template('ReChord_result.html', errors=error_msg)
+    return render_template('result.html', errors=error_msg)
 
 
 def upload_file(name_tag, tmpdirname):
