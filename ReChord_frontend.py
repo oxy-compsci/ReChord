@@ -7,7 +7,7 @@ from io import BytesIO
 from flask import Flask, request, render_template, flash, redirect, abort
 from werkzeug.utils import secure_filename
 from lxml import etree
-from search import text_box_search_folder, snippet_search_folder
+from search import text_box_search_folder, snippet_search_folder, prepare_tree
 
 ALLOWED_EXTENSIONS = {'xml', 'mei'}
 
@@ -30,44 +30,47 @@ def my_form():
     """render front page template
     Return: rendered front page 'ReChord_front.html'
     """
-    return render_template('ReChord_front.html')
+    return render_template('index.html')
 
 
 @app.route('/', methods=['POST'])
-def my_form_post():
+def my_form_post():   # pylint: disable=too-many-return-statements
     """the view function which return the result page by using the input pass to the back end
     Arguments: forms submitted in ReChord_front.html
     Return: rendered result page 'ReChord_result.html' by call on helper functions
     """
 
-    # todo: Need to iterate multiple user submitted files
-
-    # tab1 snippet search
+    # Snippet search in ReChord Database
     if request.form['submit'] == 'Search Snippet In Our Database':
         path = 'database/MEI_Complete_examples'
         return search_snippet(path, request.form['text'])
 
-    # tab1 snippet search using user submitted library
-    elif request.form['submit'] == 'Upload and Search Your Snippet':
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            path = upload_file("base_file", tmpdirname)
-            return search_snippet(path, request.form['text'])
-
-    # tab2 terms search
-    elif request.form['submit'] == 'Search Parameter':
+    # Terms search in ReChord Database
+    elif request.form['submit'] == 'Search Terms In Our Database':
         tag = request.form['term']
         para = request.form['parameter']
         path = 'database/MEI_Complete_examples'
         return search_terms(path, tag, para)
 
-    # todo: add tempfile upload html parsing for term search
+    # Snippet search using user submitted library
+    elif request.form['submit'] == 'Upload and Search Your Snippet':
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            try:
+                path = upload_file("base_file", tmpdirname)
+                return search_snippet(path, request.form['text'])
+            except NameError as error_msg:
+                return render_template('ReChord_result.html', errors=str(error_msg))
+
+    # Terms search with user submitted library
     elif request.form['submit'] == 'Upload and Search Parameter':
         tag = request.form['term']
         para = request.form['parameter']
         with tempfile.TemporaryDirectory() as tmpdirname:
-            path = upload_file("base_file", tmpdirname)
-            return search_terms(path, tag, para)
-
+            try:
+                path = upload_file("base_file", tmpdirname)
+                return search_terms(path, tag, para)
+            except NameError as error_msg:
+                return render_template('ReChord_result.html', errors=str(error_msg))
     else:
         abort(404)
         return None
@@ -92,14 +95,23 @@ def search_snippet(path, snippet):
     Return: rendered result page 'ReChord_result.html'
     """
     xml = BytesIO(snippet.encode())
-    input_xml_tree = etree.parse(xml)  # pylint: disable=c-extension-no-member
+    error_msg = ""
+    try:
+        input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
 
-    named_tuples_ls = snippet_search_folder(path, input_xml_tree)
+        named_tuples_ls = snippet_search_folder(path, input_xml_tree)
+        if named_tuples_ls:
+            return render_template('ReChord_result.html', origins=named_tuples_ls)
+        else:
+            error_msg = "No matched snippet found, maybe try something else?"
+            return render_template('ReChord_result.html', nomatch=error_msg)
+    except (etree.XMLSyntaxError, ValueError):
+        error_msg = "Invalid MEI snippet inputs. Please double check the source and try it again!"
+    except KeyError:
+        error_msg = "Invalid upload file. Please double check the source and try it again!"
+    return render_template('ReChord_result.html', errors=error_msg)
 
-    return render_template('ReChord_result.html', origins=named_tuples_ls)
 
-
-# todo: parse named tuples list for term search
 def search_terms(path, tag, para):
     """ search terms in the database
     Arguments:
@@ -108,9 +120,17 @@ def search_terms(path, tag, para):
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
-    results = text_box_search_folder(path, tag, para)
-
-    return render_template('ReChord_result.html', origins=results)
+    error_msg = ""
+    try:
+        named_tuples_ls = text_box_search_folder(path, tag, para)
+        if named_tuples_ls:
+            return render_template('ReChord_result.html', origins=named_tuples_ls)
+        else:
+            error_msg = "No matched term found, maybe try something else?"
+            return render_template('ReChord_result.html', nomatch=error_msg)
+    except KeyError:
+        error_msg = "Invalid upload file. Please double check the source and try it again!"
+    return render_template('ReChord_result.html', errors=error_msg)
 
 
 def upload_file(name_tag, tmpdirname):
@@ -118,7 +138,6 @@ def upload_file(name_tag, tmpdirname):
     Arguments: name_tag that used in html
     Return: upload path name
     """
-
     # check if the post request has the file part
     if 'base_file' not in request.files:
         flash('No file part')
@@ -133,8 +152,11 @@ def upload_file(name_tag, tmpdirname):
                 return redirect(request.url)
 
             # if properly uploaded
-            elif file and allowed_file(file.filename):
-                file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+            elif file:
+                if allowed_file(file.filename):
+                    file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+                else:
+                    raise NameError(file.filename + ' is not a allowed name or the file extension is not .mei or .xml.')
         return tmpdirname
 
 
