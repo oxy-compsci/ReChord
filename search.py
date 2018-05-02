@@ -99,7 +99,7 @@ def get_title(path):
     tree, _ = prepare_tree(path)
     title_stmt = get_elements(tree, 'titleStmt')
     if not title_stmt:
-        return "Title Not Found"
+        return None
     first = title_stmt[0]
     arr = first.getchildren()
     title_list = [element.text for element in arr if element.tag == "{http://www.music-encoding.org/ns/mei}title"]
@@ -113,7 +113,7 @@ def get_creator(path):
     """
     tree, _ = prepare_tree(path)
     if not get_elements(tree, 'respStmt'):
-        return "Creator Not Found"
+        return None
     children = get_elements(tree, 'respStmt')[0].getchildren()
     creators_list = [element.text for element in children if element.attrib['role'] == "creator"]
     return creators_list
@@ -330,7 +330,6 @@ def text_box_search_folder(path, tag, search_term):
 
 
 def snippet_search_folder(path, input_tree):
-
     """applies the search() method to a full folder
     Arguments:  path [string]: absolute of relative path to folder
                 tree is an etree to be searched
