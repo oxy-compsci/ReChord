@@ -121,14 +121,17 @@ def search_terms(path, tag, para):
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
-    results = text_box_search_folder(path, tag, para)
-
-    if results:
-        return render_template('ReChord_result.html', origins=results)
-    else:
-        not_found = "No matched term found, maybe try something else?"
-        return render_template('ReChord_result.html', nomatch=not_found)
     error_msg = ""
+    try:
+        named_tuples_ls = text_box_search_folder(path, tag, para)
+        if named_tuples_ls:
+            return render_template('ReChord_result.html', origins=named_tuples_ls)
+        else:
+            error_msg = "No matched term found, maybe try something else?"
+            return render_template('ReChord_result.html', nomatch=error_msg)
+    except KeyError:
+        error_msg = "Invalid upload file. Please double check the source and try it again!"
+    return render_template('ReChord_result.html', errors=error_msg)
 
 
 def upload_file(name_tag, tmpdirname):
