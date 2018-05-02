@@ -101,11 +101,12 @@
             <center><h1><i>ReChord Database Search</i></h1></center>
             <div class="features">
                 <section>
-                    <h2>Paste your MEI snippet to search</h2>
+                    <h2>MEI Snippet Search</h2>
                     <div class="w3-row-padding" style="margin:0 -2px;">
                         <div class="w3-full">
                             <form method="POST">
-                                <textarea name="text" rows="7" cols="80" required></textarea>
+                                <textarea name="text" rows="7" cols="80" placeholder="Paste your MEI snippet here"
+                                          required></textarea>
                                 <br>
                                 <input type="submit" name="submit" value="Search Snippet In Our Database"
                                        style="background-color: black;">
@@ -114,7 +115,7 @@
                     </div>
                 </section>
                 <section>
-                    <h2>Select music terms and parameters to search</h2>
+                    <h2>Notation Search</h2>
                     <form method="POST">
                         <div style="padding: 20px 0 40px 0;">
                             <select name="term">
@@ -127,7 +128,7 @@
                                 <option value="Pedal Marking">Pedal Marking</option>
                                 <option value="Hairpin">Hairpin</option>
                             </select>
-                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
+                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here"
                                    required>
                         </div>
                         <input type="submit" name="submit" value="Search Terms In Our Database"
@@ -141,14 +142,15 @@
     <!--Search in User Database-->
     <section id="user_database" class="wrapper user_database fade-up">
         <div class="inner">
-            <center><h1><i>User Database Search</i></h1></center>
+            <center><h1><i>Customized Database Search</i></h1></center>
             <div class="features">
                 <section>
-                    <h2>Paste your MEI and upload files</h2>
+                    <h2>MEI Snippet Search</h2>
                     <div class="w3-row-padding" style="margin:0 -2px;">
                         <div class="w3-full">
                             <form method="POST" enctype="multipart/form-data">
-                                <textarea name="text" rows="9" cols="80" required></textarea>
+                            <textarea name="text" rows="9" cols="80" placeholder="Paste your MEI snippet here"
+                                          required></textarea>
                                 <br>
                                 <input type="file" name="base_file" multiple="" required>
                                 <input type="submit" name="submit" value="Upload and Search Your Snippet">
@@ -157,7 +159,7 @@
                     </div>
                 </section>
                 <section>
-                    <h2>Upload files and input parameters to search</h2>
+                    <h2>Notation Search</h2>
                     <form method="POST" enctype="multipart/form-data">
                         <div style="padding: 20px 0 40px 0;">
                             <select name="term">
