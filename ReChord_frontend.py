@@ -94,7 +94,6 @@ def search_snippet(path, snippet):
         tree of xml base that needed to be searched in
     Return: rendered result page 'ReChord_result.html'
     """
-    error_msg = ""
     xml = BytesIO(snippet.encode())
     try:
         input_xml_tree, _ = prepare_tree(xml)  # pylint: disable=c-extension-no-member
