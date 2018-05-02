@@ -182,21 +182,24 @@ def text_search(tree, tag, search_term):  # pylint: disable = too-many-return-st
                   search_term[string]: search term to find element
        Return: [list<int>]: List of measures where tag appears"""
     root = tree.getroot()
-    if tag == "Expressive Terms":
-        return find_expressive_term(root, search_term)
-    elif tag == "Articulation":
-        return find_artic(root, search_term)
-    elif tag == "Dynamic Markings":
-        return find_dynam(root, search_term)
-    elif tag == "Hairpin":
-        return []
-    elif tag == "Tempo Marking":
-        return find_tempo(root, search_term)
-    elif tag == "Piano Fingerings":
-        return []
-    elif tag == "Pedal Marking":
-        return find_pedal_marking(root, search_term)
-    else:
+    try:
+        if tag == "Expressive Terms":
+            return find_expressive_term(root, search_term)
+        elif tag == "Articulation":
+            return find_artic(root, search_term)
+        elif tag == "Dynamic Markings":
+            return find_dynam(root, search_term)
+        elif tag == "Hairpin":
+            return []
+        elif tag == "Tempo Marking":
+            return find_tempo(root, search_term)
+        elif tag == "Piano Fingerings":
+            return []
+        elif tag == "Pedal Marking":
+            return find_pedal_marking(root, search_term)
+        else:
+            return []
+    except KeyError:
         return []
 
 
