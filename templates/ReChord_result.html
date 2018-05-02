@@ -68,7 +68,7 @@
 
                 <tbody>
                 {% for origin in origins %}
-                    {% if origin.title is none %}
+                    {% if not origin.title%}
                         <tr>
                             <td>{{origin.appearance}}</td>
                             <td><p>Title Not Found</p><br><strong>File Name: </strong><i>{{origin.file_name}}</i></td>
