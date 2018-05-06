@@ -26,7 +26,7 @@ def allowed_file(filename):
 
 
 @app.route('/')
-def my_form():
+def form():
     """render front page template
     Return: rendered front page 'index.html'
     """
@@ -41,7 +41,7 @@ def documentation():
 
 
 @app.route('/', methods=['POST'])
-def my_form_post():   # pylint: disable=too-many-return-statements
+def form_post():   # pylint: disable=too-many-return-statements
     """the view function which return the result page by using the input pass to the back end
     Arguments: forms submitted in index.html
     Return: rendered result page 'result.html' by call on helper functions
