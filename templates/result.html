@@ -144,24 +144,25 @@
     <section id="user_database" class="wrapper user_database fade-up">
         <div class="inner">
             <center><h1><i>Customized Database Search</i></h1></center>
-            <div class="features">
-                <section>
-                    <h2>MEI Snippet Search</h2>
-                    <div class="w3-row-padding" style="margin:0 -2px;">
-                        <div class="w3-full">
-                            <form method="POST" enctype="multipart/form-data">
-                            <textarea name="text" rows="9" cols="80" placeholder="Paste your MEI snippet here"
-                                          required></textarea>
+            <form method="POST" enctype="multipart/form-data">
+                    <span class="btn btn-primary">
+                        <input type="file" name="base_file" multiple="">
+                    </span>
+                <div class="features">
+                    <section>
+                        <h2>MEI Snippet Search</h2>
+                        <div class="w3-row-padding" style="margin:0 -2px;">
+                            <div class="w3-full">
+                                <textarea name="text" rows="9" cols="80"
+                                          placeholder="Paste your MEI snippet here"></textarea>
                                 <br>
-                                <input type="file" name="base_file" multiple="" required>
                                 <input type="submit" name="submit" value="Upload and Search Your Snippet">
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Notation Search</h2>
-                    <form method="POST" enctype="multipart/form-data">
+                    </section>
+                    <section>
+                        <h2>Notation Search</h2>
+
                         <div style="padding: 20px 0 40px 0;">
                             <select name="term">
                                 <option value="">Select your term</option>
@@ -173,14 +174,13 @@
                                 <option value="Pedal Marking">Pedal Marking</option>
                                 <option value="Hairpin">Hairpin</option>
                             </select>
-                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
-                                   required>
+                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here">
                         </div>
-                        <input type="file" name="base_file" multiple="" required>
                         <input type="submit" name="submit" value="Upload and Search Parameter">
-                    </form>
-                </section>
-            </div>
+
+                    </section>
+                </div>
+            </form>
         </div>
     </section>
 
