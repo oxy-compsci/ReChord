@@ -44,12 +44,12 @@ The following are notes to keep in mind when working on the 'search.py' methods:
 	 - Using tuple to declare a match: `result_list.append(result(file_name, title, creator, str(measure_numbers)[1:-1], appearance))`
 
 
-
 # Project ReChord Front-end integration
 
 The existing Project ReChord website is built upon Flask and Jinja. Before you start, it's good to get your hands on how [Flask](http://flask.pocoo.org/) and [Jinja](http://jinja.pocoo.org/) work. You may certainly have your own search interface, so let's get started!
 
-# Essential Files and Structures
+## Essential Files and Structures
+
 Flask has its own rules to setup the web structure. In our project (and many other standard flask projects), the heirarchy and naming are:
 
  - **static**
@@ -70,7 +70,8 @@ To call a css file with name **css/main.css**
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
 
-# Setup Flask
+## Setup Flask
+
 To setup your flask, first you need to setup a python file and call flask.
 
     app = Flask(__name__)
@@ -80,7 +81,8 @@ After you build your homepage (generally named index.html), specify a [route](ht
     def my_form():
 	    return render_template('index.html')
 
-# Passing data from HTML to Flask
+## Passing data from HTML to Flask
+
 In our current development, we pass text and dropdown choices to the backend search algorithms.
 In the snippet search, we retrieve snippets using textarea. The snippet input will be passed as "*text"* and the submission value will be passed as *"Search Snippet In Our Database"*.
 
@@ -98,6 +100,7 @@ In the snippet search, we retrieve snippets using textarea. The snippet input wi
 	    return search_snippet(path, request.form['text'])
 
 In the term search, we pass two values to the backend: *tag* and *para*
+
 **Term search in index.html**
 
     <div style="padding: 20px 0 40px 0;">
@@ -121,4 +124,62 @@ In the term search, we pass two values to the backend: *tag* and *para*
 	    para = request.form['parameter']
 	    path = 'database/MEI_Complete_examples'
 	    return search_terms(path, tag, para)
-All parameters will then be passed to the front-end search function: **search_snippet** and **search_terms**. These two functions will communicate with the backend search algorithm, retrieving necessary information
+All parameters will then be passed to the front-end search function: **search_snippet** and **search_terms**. These two functions will communicate with the backend search algorithm, retrieving necessary information to display in **Jinja** format.
+
+## Data and error handling before sending to search
+
+Before passing input data to the backend search algorithms, we have **search_snippet** and **search_term** to determine what type of the search to perform and return variables passing to Jinja. Error handling includes:
+
+> Check for invalid MEI snippet inputs
+>  `(etree.XMLSyntaxError, ValueError) #Invalid MEI snippet inputs`
+>
+> Check for Invalid upload file
+> `except KeyError:`
+>
+> Only allow users to upload mei or xml files
+>
+     elif file:
+    >  	if allowed_file(file.filename):
+    >  		file.save(os.path.join(tmpdirname, secure_filename(file.filename)))
+    >  else:
+    >  		raise NameError(file.filename + ' is not a allowed name or the file extension is not .mei or .xml.')
+
+## File upload and path search
+We pass the upload files and store them in uploads folder's unique sub-folder. The function **upload_file** will create a temporary directory and then the search function will retrieve files to search.
+
+In both search_snippet and search_term, the path that allow searching in user submitted library is:
+
+    with tempfile.TemporaryDirectory() as tmpdirname:
+    try:
+        path = upload_file("base_file", tmpdirname)
+
+## Results display
+Besides the front **index.html**, we need another html page to display the results. In our project we have a dedicated page **result.html**. The backend returns search results in the form of **tuple**, therefore we need to loop through each element in tuple and display different values associate with it.
+
+
+
+**Jinja in results.html**
+
+    {% for origin in origins %}
+        {% if not origin.title%}
+            <tr>
+     <td>{{origin.appearance}}</td>
+     <td><span style="color: #DB5F46">Title Not Found</span><br><strong>File Name: </strong><i>{{origin.file_name}}</i></td>
+     <td>{{origin.creator}}</td>
+     <td>{{origin.measure_numbers}}</td>
+     </tr>  {% else %}
+            <tr>
+     <td>{{origin.appearance}}</td>
+     <td>{{origin.title}}<br><strong>File Name: </strong><i>{{origin.file_name}}</i></td>
+     <td>{{origin.creator}}</td>
+     <td>{{origin.measure_numbers}}</td>
+     </tr>  {% endif %}
+    {% endfor %}
+
+Once we have specify which value goes to where, we can then set the results from the backend equal to the value inside {{ }} during **render_template**.
+
+For example:
+
+    return render_template('result.html', origins=named_tuples_ls)
+
+Since origins is now a tuple list, we can loop through using jinja's for loop in html and then call different values encapsulated. e.g. `{{origin.creator}}`
