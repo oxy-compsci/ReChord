@@ -11,18 +11,14 @@ app
 └── database
 |   └── MEI_Complete_examples (a folder of many mei files)
 |   └── test_files
-└── js
-|   └── main.js
 └── static
 |   └── css
 |   └── fonts
 |   └── js
 |   └── sass
 └── templates
-|   └── images
 |   └── index.html
-|   └── ReChord_front.html
-|   └── ReChord_result.html
+|   └── result.html
 └── ReChord_frontend.py
 └── search.py
 └── tests.py
