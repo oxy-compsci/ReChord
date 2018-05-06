@@ -32,6 +32,7 @@ def form():
     """
     return render_template('index.html')
 
+
 @app.route('/documentation')
 def documentation():
     """render front page template
