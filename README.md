@@ -26,6 +26,25 @@ app
 
 ```
 
+# Project ReChord Back-End Essential Files and Structures
+
+The back-end of this project uses Python to develop its search.
+This project uses lxml in order to parse the MEI file and develop a tree of elements which is used for our search methods. It is necessary to install lxml to run the back-end. It is also encouraged to get familiar with lxml and its capabilities before jumping into the back-end. All methods for the back-end can be found in 'search.py' with test cases in 'tests.py'.
+
+The following are notes to keep in mind when working on the 'search.py' methods:
+ - lxml allows the developer to parse an MEI (or xml) document into a tree of elements (or 'etree')
+ - MEI has a specific namespace which is imperative for a developer to search through tags of elements in the tree: `'{http://www.music-encoding.org/ns/mei}'`
+ - We use 'element' and 'root' which are objects outlined in the lxml API. These objects allow us to extract data from the etree.
+ - We mainly utilized the 'attrib', 'tag', and 'text' properties of an element to compare to our desired criteria, which generally took the form of a string: `creators_list = [element.text for element in children if element.attrib['role'] == "creator"]`
+ - Terms dictionary file ('terms_dict.txt') allows the user to search by shorthands for a term and the full term interchangeably.
+	 -  e.g. 'cresc.' and 'crescendo' will produce the same output in expressive term search.
+ - Tuples are used for the output of 'text_box_search_folder' and 'snippet_search_folder' and allow the front-end to display the output much more intuitively.
+	 - Tuple creation: `result = namedtuple('result', ['file_name', 'title', 'creator', 'measure_numbers', 'appearance'])`
+
+	 - Using tuple to declare a match: `result_list.append(result(file_name, title, creator, str(measure_numbers)[1:-1], appearance))`
+
+
+
 # Project ReChord Front-end integration
 
 The existing Project ReChord website is built upon Flask and Jinja. Before you start, it's good to get your hands on how [Flask](http://flask.pocoo.org/) and [Jinja](http://jinja.pocoo.org/) work. You may certainly have your own search interface, so let's get started!
