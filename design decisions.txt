@@ -1,0 +1,30 @@
+Design Decisions:
+-Client's Requests:
+  -Main necessary functionality is searching for expressive terms, dynamic markings, tempo markings
+  -Secondary would be searching for sequences of notes and adding a tempo marking tab
+  -Make sure abbreviations return all used forms of the word (ex: searching "cresc." will also return all results for "crescendo")
+  -Ideally run on a web service so professors can easily use it without having to download or compile programs
+
+-lxml:
+  -We decided to use lxml for the main functionality to convert MEI to a tree structure and traverse elements
+  -lxml's etree object and find/iter functions allowed us to build the search functions easily
+  -XPath had slightly better find functionality but the iterators and structural methods didn't fit the project as well
+
+-python:
+  -We were deciding between java and python, but after reviewing the project needs we thought python would make for more readable code
+  -Didn't need any java-specific functionality and we found several xml libraries for python that fit our needs
+  -Adds some readability to code for those who plan to contribute in the future
+
+-flask:
+  -Allowed us to keep things mostly in python, which makes things much easier
+  -Didn't need user interface aspects or live updating components of javascript 
+  -Easy to create build and integrate with Heroku
+
+-Search Types:
+  -Based on meetings with our community partner, we found that most use cases were single terms or attributes
+    -Certain types of element are more important to historians than other
+  -To easily cover wider use cases, we decided to add a snippet search so that users can custom write any input
+  -Wanted to have a tab for tempo markings, but didn't have time to implement
+    -Set of radio buttons with each type of note 
+
+  
