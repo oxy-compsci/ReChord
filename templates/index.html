@@ -15,6 +15,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie9.css') }}"><![endif]-->
     <!--[if lte IE 8]>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/ie8.css') }}"><![endif]-->
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">-->
 
 </head>
 <body>
@@ -27,7 +30,7 @@
                 <li><a href="#intro">Welcome</a></li>
                 <li><a href="#default_database">Search Our Database</a></li>
                 <li><a href="#user_database">Search Your Database</a></li>
-                <li><a href="https://github.com/oxy-compsci/ReChord" target="_blank">More on GitHub</a></li>
+                <li><a href="/documentation">Documentation</a></li>
             </ul>
         </nav>
     </div>
@@ -39,8 +42,9 @@
     <!-- Intro -->
     <section id="intro" class="wrapper style1 fullscreen fade-up">
         <div class="inner">
-            <h1>Project ReChord</h1>
-            <p>A MEI search engine that transforms your music study.
+            <img src="/static/images/reChord_logo.png" alt="" width=""
+                 height="151"/>
+            <p>A web application that seeks to aid the comparative study of musical expressive terms by allowing for text-based search across MEI data.</p>
             <ul class="actions">
                 <li><a href="#default_database" class="button scrolly">Get Started</a></li>
             </ul>
@@ -53,11 +57,12 @@
             <center><h1><i>ReChord Database Search</i></h1></center>
             <div class="features">
                 <section>
-                    <h2>Note Search</h2>
+                    <h2>MEI Snippet Search</h2>
                     <div class="w3-row-padding" style="margin:0 -2px;">
                         <div class="w3-full">
                             <form method="POST">
-                                <textarea name="text" rows="7" cols="80" placeholder="Paste your MEI snippet here" required></textarea>
+                                <textarea name="text" rows="7" cols="80" placeholder="Paste your MEI snippet here"
+                                          required></textarea>
                                 <br>
                                 <input type="submit" name="submit" value="Search Snippet In Our Database"
                                        style="background-color: black;">
@@ -94,23 +99,25 @@
     <section id="user_database" class="wrapper user_database fade-up">
         <div class="inner">
             <center><h1><i>Customized Database Search</i></h1></center>
-            <div class="features">
-                <section>
-                    <h2>Note Search</h2>
-                    <div class="w3-row-padding" style="margin:0 -2px;">
-                        <div class="w3-full">
-                            <form method="POST" enctype="multipart/form-data">
-                                <textarea name="text" rows="9" cols="80" placeholder="Paste your MEI snippet here" required></textarea>
+            <form method="POST" enctype="multipart/form-data">
+                    <span class="btn btn-primary">
+                        <input type="file" name="base_file" multiple="">
+                    </span>
+                <div class="features">
+                    <section>
+                        <h2>MEI Snippet Search</h2>
+                        <div class="w3-row-padding" style="margin:0 -2px;">
+                            <div class="w3-full">
+                                <textarea name="text" rows="9" cols="80"
+                                          placeholder="Paste your MEI snippet here"></textarea>
                                 <br>
-                                <input type="file" name="base_file" multiple="" required>
                                 <input type="submit" name="submit" value="Upload and Search Your Snippet">
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Notation Search</h2>
-                    <form method="POST" enctype="multipart/form-data">
+                    </section>
+                    <section>
+                        <h2>Notation Search</h2>
+
                         <div style="padding: 20px 0 40px 0;">
                             <select name="term">
                                 <option value="">Select your term</option>
@@ -122,14 +129,13 @@
                                 <option value="Pedal Marking">Pedal Marking</option>
                                 <option value="Hairpin">Hairpin</option>
                             </select>
-                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here"
-                                   required>
+                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here">
                         </div>
-                        <input type="file" name="base_file" multiple="" required>
                         <input type="submit" name="submit" value="Upload and Search Parameter">
-                    </form>
-                </section>
-            </div>
+
+                    </section>
+                </div>
+            </form>
         </div>
     </section>
 </div>
@@ -138,8 +144,9 @@
 <footer id="footer" class="wrapper style1-alt">
     <div class="inner">
         <ul class="menu">
-            <li>&copy; Project ReChord. All rights reserved.</li>
-            <li>Built by: Lijia Li, Nicholas Bethune, Yinbo Gao, Jack Neary</li>
+            <li style="color: #ffffff">&copy; Project ReChord. All rights reserved.</li>
+            <li style="color: #ffffff">Built by: Lijia Li, Nicholas Bethune, Yinbo Gao, Jack Neary</li>
+            <li><a href="https://github.com/oxy-compsci/ReChord"style="color: #ffffff"><i class="fa fa-github" aria-hidden="true" style="color: #ffffff"></i> GitHub</a></li>
         </ul>
     </div>
 </footer>

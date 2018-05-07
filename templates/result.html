@@ -42,11 +42,10 @@
     <div class="inner">
         <nav>
             <ul>
-                <li><a href="./">Home</a></li>
-                <li><a href="#result">Search Results</a></li>
+                <li><a href="#intro">Welcome</a></li>
                 <li><a href="#default_database">Search Our Database</a></li>
                 <li><a href="#user_database">Search Your Database</a></li>
-                <li><a href="https://github.com/oxy-compsci/ReChord" target="_blank">More on GitHub</a></li>
+                <li><a href="/documentation">Documentation</a></li>
             </ul>
         </nav>
     </div>
@@ -60,9 +59,9 @@
             <center><h1><i>Search Results</i></h1></center>
             <table>
                 <tr>
-                    <th>Numbers of Matching</th>
+                    <th>Number of Matches</th>
                     <th>Title</th>
-                    <th>Author</th>
+                    <th>Composer</th>
                     <th>Measures</th>
                 </tr>
 
@@ -103,11 +102,12 @@
             <center><h1><i>ReChord Database Search</i></h1></center>
             <div class="features">
                 <section>
-                    <h2>Paste your MEI snippet to search</h2>
+                    <h2>MEI Snippet Search</h2>
                     <div class="w3-row-padding" style="margin:0 -2px;">
                         <div class="w3-full">
                             <form method="POST">
-                                <textarea name="text" rows="7" cols="80" required></textarea>
+                                <textarea name="text" rows="7" cols="80" placeholder="Paste your MEI snippet here"
+                                          required></textarea>
                                 <br>
                                 <input type="submit" name="submit" value="Search Snippet In Our Database"
                                        style="background-color: black;">
@@ -116,7 +116,7 @@
                     </div>
                 </section>
                 <section>
-                    <h2>Select music terms and parameters to search</h2>
+                    <h2>Notation Search</h2>
                     <form method="POST">
                         <div style="padding: 20px 0 40px 0;">
                             <select name="term">
@@ -129,7 +129,7 @@
                                 <option value="Pedal Marking">Pedal Marking</option>
                                 <option value="Hairpin">Hairpin</option>
                             </select>
-                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
+                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here"
                                    required>
                         </div>
                         <input type="submit" name="submit" value="Search Terms In Our Database"
@@ -143,24 +143,26 @@
     <!--Search in User Database-->
     <section id="user_database" class="wrapper user_database fade-up">
         <div class="inner">
-            <center><h1><i>User Database Search</i></h1></center>
-            <div class="features">
-                <section>
-                    <h2>Paste your MEI and upload files</h2>
-                    <div class="w3-row-padding" style="margin:0 -2px;">
-                        <div class="w3-full">
-                            <form method="POST" enctype="multipart/form-data">
-                                <textarea name="text" rows="9" cols="80" required></textarea>
+            <center><h1><i>Customized Database Search</i></h1></center>
+            <form method="POST" enctype="multipart/form-data">
+                    <span class="btn btn-primary">
+                        <input type="file" name="base_file" multiple="">
+                    </span>
+                <div class="features">
+                    <section>
+                        <h2>MEI Snippet Search</h2>
+                        <div class="w3-row-padding" style="margin:0 -2px;">
+                            <div class="w3-full">
+                                <textarea name="text" rows="9" cols="80"
+                                          placeholder="Paste your MEI snippet here"></textarea>
                                 <br>
-                                <input type="file" name="base_file" multiple="" required>
                                 <input type="submit" name="submit" value="Upload and Search Your Snippet">
-                            </form>
+                            </div>
                         </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Upload files and input parameters to search</h2>
-                    <form method="POST" enctype="multipart/form-data">
+                    </section>
+                    <section>
+                        <h2>Notation Search</h2>
+
                         <div style="padding: 20px 0 40px 0;">
                             <select name="term">
                                 <option value="">Select your term</option>
@@ -172,14 +174,13 @@
                                 <option value="Pedal Marking">Pedal Marking</option>
                                 <option value="Hairpin">Hairpin</option>
                             </select>
-                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here:"
-                                   required>
+                            <input type="text" class="terms" name="parameter" placeholder="Enter your parameter here">
                         </div>
-                        <input type="file" name="base_file" multiple="" required>
                         <input type="submit" name="submit" value="Upload and Search Parameter">
-                    </form>
-                </section>
-            </div>
+
+                    </section>
+                </div>
+            </form>
         </div>
     </section>
 
@@ -189,8 +190,9 @@
 <footer id="footer" class="wrapper style1-alt">
     <div class="inner">
         <ul class="menu">
-            <li>&copy; Project ReChord. All rights reserved.</li>
-            <li>Built by: Lijia Li, Nicholas Bethune, Yinbo Gao, Jack Neary</li>
+            <li style="color: #ffffff">&copy; Project ReChord. All rights reserved.</li>
+            <li style="color: #ffffff">Built by: Lijia Li, Nicholas Bethune, Yinbo Gao, Jack Neary</li>
+            <li><a href="https://github.com/oxy-compsci/ReChord"style="color: #ffffff"><i class="fa fa-github" aria-hidden="true" style="color: #ffffff"></i> GitHub</a></li>
         </ul>
     </div>
 </footer>
